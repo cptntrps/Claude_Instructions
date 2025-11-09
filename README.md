@@ -1,6 +1,6 @@
 # Claude Development Instructions
 
-**Version:** 1.2.0
+**Version:** 1.3.0
 **Last Updated:** 2025-11-09
 
 A comprehensive, reusable instruction system for Claude Code that defines agentic workflows, best practices, and quality standards for software development projects.
@@ -9,10 +9,13 @@ A comprehensive, reusable instruction system for Claude Code that defines agenti
 
 ## 🎯 Purpose
 
-This repository contains a modular instruction system that guides Claude through various development scenarios with:
+This repository contains a **portable instruction system** in the `claude_instructions/` folder that you can copy to any project. Claude will then follow these instructions to provide consistent, high-quality development assistance across all your projects.
 
+**Key Features:**
 - **Principle-oriented workflows** with non-negotiable safety guardrails
 - **Adaptive autonomy** based on task risk and complexity
+- **6 operational modes** for different contexts (Speed, Review, Debug, etc.)
+- **Interactive initialization** with guided setup
 - **Comprehensive quality standards** for security, testing, and code quality
 - **Project-specific configurations** for different tech stacks
 - **Advanced guides** for complex scenarios (rollback, migrations, security)
@@ -21,74 +24,75 @@ This repository contains a modular instruction system that guides Claude through
 
 ## 🚀 Quick Start
 
-### **Method 1: Interactive Setup** (Recommended)
+### **Step 1: Copy to Your Project**
 
-Start a new Claude Code session and type exactly:
+Copy the `claude_instructions/` folder into your project:
+
+```bash
+# From this repository
+cp -r claude_instructions/ /path/to/your/project/
+
+# Or clone and copy
+git clone <this-repo-url>
+cp -r Claude_Instructions/claude_instructions/ /path/to/your/project/
+```
+
+**Result:** Your project now has a `claude_instructions/` folder with all the guidance.
+
+---
+
+### **Step 2: Start Claude Code Session**
+
+In your project, start a new Claude Code session and type:
 
 ```
 INITIATE CLAUDE CODE INSTRUCTIONS
 ```
 
-Claude will then:
-1. ✅ Load the complete instruction system
-2. 🔍 Auto-detect your project type (Next.js, Express, etc.)
+**That's it!** Claude will:
+1. ✅ Load the instruction system from `claude_instructions/`
+2. 🔍 Auto-detect your project type (Next.js, Express, React Native, etc.)
 3. 🎛️ Present a menu to select operational mode
 4. ✅ Validate your development environment
 5. 📋 Show common tasks menu
 6. 🚀 Activate the appropriate workflow
 
-**Interactive Example:**
-```
-You: INITIATE CLAUDE CODE INSTRUCTIONS
+---
 
-Claude:
-╔══════════════════════════════════════════════════════╗
-║  🤖 Claude Code Development Assistant v1.2.0        ║
-╚══════════════════════════════════════════════════════╝
+### **Alternative Methods**
 
-Loading...
-✓ Instructions loaded
-✓ Detected: Next.js Web Application
-
-🎛️ Select mode: [Shows 7 options]
-🎯 What would you like to do? [Shows task menu]
-```
-
-### **Method 2: Quick Start** (For Experienced Users)
-
+#### **Quick Start (No Menus)**
 ```
 QUICK START
 ```
+Loads instructions, detects project, uses standard mode, no interaction.
 
-Loads instructions, detects project, uses standard mode, no menus.
-
-Or with a specific mode:
+#### **Quick Start with Mode**
 ```
 QUICK START: SPEED MODE
 ```
+Immediately activates a specific mode.
 
-### **Method 3: Manual** (Traditional)
-
+#### **Manual (Traditional)**
 ```
-Read and follow the instructions in claude_instructions.md
+Read and follow the instructions in claude_instructions/claude_instructions.md
 ```
-
-Claude loads instructions silently and waits for your direction.
+Silent loading, you direct everything.
 
 ---
 
-## 📁 Structure
+## 📁 What's in the Folder
 
 ```
-Claude_Instructions/
+claude_instructions/
 ├── claude_instructions.md          # Main entry point - START HERE
 ├── initialization.md               # Interactive setup script
 ├── meta-modes.md                   # Meta modes documentation
 │
 ├── core/                            # Fundamental principles
 │   ├── principles.md                # Core development principles
-│   ├── tool-usage-guide.md         # How to use Claude tools effectively
-│   └── communication-standards.md  # How Claude should communicate
+│   ├── tool-usage-guide.md         # How to use Claude tools
+│   └── communication-standards.md  # Communication guidelines
 │
 ├── workflows/                       # Task-specific workflows
 │   ├── bug-fix.md                  # Investigating and fixing bugs
@@ -96,23 +100,23 @@ Claude_Instructions/
 │   ├── code-review.md              # Reviewing code quality
 │   ├── refactoring.md              # Improving code structure
 │   ├── testing.md                  # Writing and maintaining tests
-│   └── deployment.md               # CI/CD and deployment preparation
+│   └── deployment.md               # CI/CD and deployment
 │
 ├── standards/                       # Quality standards
 │   ├── git-conventions.md          # Commit messages, branches, PRs
-│   ├── testing-standards.md        # Coverage requirements, test types
+│   ├── testing-standards.md        # Coverage requirements
 │   ├── security-checklist.md       # OWASP, secrets, validation
 │   └── code-quality.md             # Linting, complexity, naming
 │
-├── project-types/                   # Project-specific configurations
+├── project-types/                   # Project-specific configs
 │   ├── nextjs-webapp.md            # Next.js applications
 │   ├── express-api.md              # Express.js APIs
-│   ├── react-native-mobile.md      # React Native mobile apps
-│   ├── flutter-mobile.md           # Flutter mobile apps
+│   ├── react-native-mobile.md      # React Native apps
+│   ├── flutter-mobile.md           # Flutter apps
 │   └── fastapi-python.md           # FastAPI Python APIs
 │
-├── advanced/                        # Advanced feature guides
-│   ├── rollback-recovery.md        # Handling deployment failures
+├── advanced/                        # Advanced guides
+│   ├── rollback-recovery.md        # Deployment failures & rollback
 │   ├── secrets-management.md       # Secure credential handling
 │   ├── database-migrations.md      # Safe schema changes
 │   ├── dependency-management.md    # Package updates, security
@@ -122,13 +126,38 @@ Claude_Instructions/
     └── config.schema.json          # JSON schema for project configs
 ```
 
+**Total:** 28 files, 11,400+ lines of comprehensive guidance
+
+---
+
+## 🎛️ Meta Modes
+
+The instruction system supports 6 operational modes:
+
+| Mode | When to Use | Behavior |
+|------|-------------|----------|
+| 🔍 **EVALUATION** | Testing/validating instructions | Detailed reporting with citations |
+| ⚡ **SPEED** | Production work, routine tasks | Minimal communication, max efficiency |
+| 🔒 **REVIEW** | Critical systems, production DBs | Extra caution, asks before ALL changes |
+| 📚 **LEARNING** | Training, education | Explains WHY, not just WHAT |
+| 🐛 **DEBUG** | Troubleshooting | Shows reasoning and decisions |
+| 🚀 **PROTOTYPE** | POCs, exploration | Relaxed quality gates, fast iteration |
+| ⚙️ **STANDARD** | General development | Balanced approach (default) |
+
+**Activate during initialization or use:**
+```
+SWITCH MODE: [MODE NAME]
+```
+
+**See:** [`claude_instructions/meta-modes.md`](claude_instructions/meta-modes.md) for details.
+
 ---
 
 ## 🎚️ Customization
 
-### Project-Specific Override
+### **Project-Specific Configuration**
 
-Create `.claude/config.json` in your project to override defaults:
+Create `.claude/config.json` in your project root (not inside `claude_instructions/`):
 
 ```json
 {
@@ -148,77 +177,17 @@ Create `.claude/config.json` in your project to override defaults:
     "askBeforeRefactoring": false,
     "askBeforeNewDependencies": true
   },
-  "customInstructions": "Always check our internal API design guide at docs/api-patterns.md before implementing endpoints."
+  "customInstructions": "Always check our API design guide at docs/api-patterns.md"
 }
 ```
 
-See [`.claude/config.schema.json`](.claude/config.schema.json) for all available options.
-
----
-
-## 🎛️ Meta Modes
-
-**NEW in v1.1.0:** Activate different operational modes for specific contexts.
-
-### Available Modes
-
-**🔍 EVALUATION MODE** - For testing the instruction system itself
-```
-Activate EVALUATION MODE.
-```
-- Provides detailed reporting with citations
-- Explains which workflow/principle is being followed
-- Reports on non-negotiable compliance
-- Perfect for validating the instruction system
-
-**⚡ SPEED MODE** - For maximum efficiency
-```
-Activate SPEED MODE.
-```
-- Minimal communication, maximum action
-- Still enforces all non-negotiables
-- Perfect for routine tasks and production work
-
-**🔒 REVIEW MODE** - For critical systems
-```
-Activate REVIEW MODE.
-```
-- Extra caution, asks before ALL changes
-- Shows full diffs and impact analysis
-- Perfect for production databases, financial systems
-
-**📚 LEARNING MODE** - For education and mentoring
-```
-Activate LEARNING MODE.
-```
-- Explains WHY, not just WHAT
-- References documentation and best practices
-- Perfect for training and knowledge building
-
-**🐛 DEBUG MODE** - For troubleshooting
-```
-Activate DEBUG MODE.
-```
-- Shows reasoning and decision-making
-- Explains tool choices and alternatives
-- Perfect for understanding Claude's behavior
-
-**🚀 PROTOTYPE MODE** - For fast exploration
-```
-Activate PROTOTYPE MODE.
-```
-- Relaxed quality gates (50% coverage OK)
-- Focus on working code over perfect code
-- Still enforces security rules
-- Perfect for POCs and spike work
-
-**See [meta-modes.md](meta-modes.md) for complete documentation.**
+**Schema:** See `claude_instructions/.claude/config.schema.json`
 
 ---
 
 ## 🔑 Key Features
 
-### 1. Principle-Oriented with Guardrails
+### **1. Principle-Oriented with Guardrails**
 
 **Flexible workflows guided by principles:**
 - Understand before acting
@@ -230,176 +199,221 @@ Activate PROTOTYPE MODE.
 **But with non-negotiable safety rules:**
 - Never commit secrets
 - Always validate inputs
-- Always pass tests before committing
+- All tests must pass
 - Zero linting errors
 - Conventional commits required
 
-### 2. Adaptive Autonomy
+### **2. Adaptive Autonomy**
 
-Claude adapts decision-making based on risk:
+Claude adjusts decision-making based on risk:
 
-**High Autonomy** (just do it):
+**High Autonomy** (auto-execute):
 - Fix linting errors
+- Remove console.logs
 - Add missing tests
-- Update documentation
 
 **Medium Autonomy** (recommend & proceed):
 - Implement features
 - Refactor code
-- Optimize performance
+- Performance optimizations
 
 **Low Autonomy** (always ask):
 - Architecture changes
 - Database schema changes
 - Breaking API changes
 
-### 3. Comprehensive Standards
+### **3. Project Type Detection**
 
-**Security:** OWASP top 10, input validation, secrets management
-**Testing:** 70%+ coverage, unit/integration/e2e patterns
-**Code Quality:** Linting, type checking, complexity limits
-**Git:** Conventional commits, atomic changes, PR templates
+Auto-detects and adapts to your stack:
+- Next.js Web Apps
+- Express APIs
+- React Native Mobile
+- Flutter Mobile
+- FastAPI Python
 
-### 4. Project Type Auto-Detection
+### **4. Comprehensive Workflows**
 
-Automatically detects and adapts to:
-- Next.js (detects `next.config.js`)
-- Express (detects `express` in package.json)
-- React Native (detects `react-native`)
-- Flutter (detects `pubspec.yaml`)
-- FastAPI (detects `fastapi` in requirements)
+6 battle-tested workflows:
+- 🐛 Bug Fix
+- ✨ Feature Development
+- 🔧 Refactoring
+- 📝 Code Review
+- 🧪 Testing
+- 🚀 Deployment
 
-Each project type has specific commands, patterns, and best practices.
+### **5. Advanced Scenarios**
+
+Handles complex situations:
+- Rollback & Recovery (production incidents)
+- Database Migrations (schema changes)
+- Secrets Management (secure credentials)
+- Dependency Management (security updates)
+- Data Validation (input sanitization)
 
 ---
 
-## 📖 Usage Examples
+## 📊 Usage Examples
 
-### Example 1: Bug Fix
+### **Example 1: New Project Setup**
 
-```
-User: "The login endpoint is returning 500 errors"
+```bash
+# Create new Next.js project
+npx create-next-app@latest my-app
+cd my-app
 
-Claude:
-1. Reads bug-fix.md workflow
-2. Investigates: reads login code, checks logs
-3. Identifies issue: missing null check
-4. Creates failing test
-5. Implements fix
-6. Verifies test passes
-7. Runs full suite
-8. Commits: "fix(auth): add null check in login endpoint"
-```
+# Copy instructions
+cp -r ~/Claude_Instructions/claude_instructions/ .
 
-### Example 2: New Feature
+# Start Claude Code
+# In Claude:
+INITIATE CLAUDE CODE INSTRUCTIONS
 
-```
-User: "Add profile image upload"
-
-Claude:
-1. Reads feature-development.md workflow
-2. Explores existing upload patterns
-3. Creates task breakdown
-4. Implements: validation, storage, API, tests
-5. Security check: file type validation, size limits
-6. Runs all quality gates
-7. Commits: "feat(profile): add profile image upload"
-```
-
-### Example 3: Deployment Issue
-
-```
-User: "Production is down after deployment!"
-
-Claude:
-1. Reads rollback-recovery.md
-2. Assesses severity: Critical
-3. Executes rollback procedure
-4. Verifies previous version restored
-5. Investigates issue offline
-6. Provides post-mortem analysis
+# Claude detects Next.js, shows menu, you select task
+# Ready to develop!
 ```
 
 ---
 
-## ✅ Validation Checklist
+### **Example 2: Existing Project**
 
-Use this checklist to validate the instruction system is working correctly:
+```bash
+# Add to existing project
+cd my-existing-project
+cp -r ~/Claude_Instructions/claude_instructions/ .
 
-### Setup Validation
-- [ ] Repository structure matches expected layout
-- [ ] All markdown files are present and readable
-- [ ] `.claude/config.schema.json` is valid JSON
+# Optional: Create project config
+cat > .claude/config.json << 'EOF'
+{
+  "projectType": "nextjs-webapp",
+  "qualityGates": {
+    "minCoverage": 80
+  },
+  "customInstructions": "Use our company's design system in components/"
+}
+EOF
 
-### Workflow Validation
-- [ ] Test bug fix scenario: Claude creates test, fixes, verifies
-- [ ] Test feature scenario: Claude breaks down task, implements incrementally
-- [ ] Test refactoring scenario: Claude maintains behavior, tests pass
-
-### Standards Validation
-- [ ] Claude rejects commits with secrets
-- [ ] Claude enforces test coverage minimums
-- [ ] Claude uses conventional commit messages
-- [ ] Claude runs linting before committing
-
-### Autonomy Validation
-- [ ] Claude auto-fixes linting without asking
-- [ ] Claude asks before adding new dependencies
-- [ ] Claude asks before database schema changes
-- [ ] Claude explains decisions for refactoring
-
-### Project Type Validation
-- [ ] Correct auto-detection for your project type
-- [ ] Appropriate commands used (npm vs pip vs flutter)
-- [ ] Project-specific patterns followed
+# Start Claude Code
+INITIATE CLAUDE CODE INSTRUCTIONS
+```
 
 ---
 
-## 🔄 Maintenance
+### **Example 3: Multiple Projects**
 
-### Updating Instructions
+```bash
+# Same instructions across all projects
+for project in project1 project2 project3; do
+  cp -r claude_instructions/ ~/projects/$project/
+done
 
-1. Edit the relevant markdown files
-2. Update version number in main `claude_instructions.md`
-3. Document changes in this README
-4. Test with actual Claude Code session
-
-### Adding New Project Types
-
-1. Create file in `project-types/` directory
-2. Include: detection criteria, commands, patterns
-3. Add to main `claude_instructions.md` detection table
-4. Update `.claude/config.schema.json` enum
-
-### Adding New Workflows
-
-1. Create file in `workflows/` directory
-2. Follow existing structure: Core Principle, Non-Negotiables, Framework
-3. Add to main `claude_instructions.md` workflow table
+# Each project can have its own .claude/config.json for customization
+```
 
 ---
 
-## 🤝 Contributing
+## 🧪 Testing the System
 
-This is an internal instruction system. To propose changes:
+### **Validation Checklist**
 
-1. Test changes in actual development scenarios
-2. Ensure backward compatibility
-3. Document rationale for changes
-4. Update version number and changelog
+After copying to a project:
+
+- [ ] Copy `claude_instructions/` folder to project
+- [ ] Start Claude Code session
+- [ ] Run `INITIATE CLAUDE CODE INSTRUCTIONS`
+- [ ] Verify project type detected correctly
+- [ ] Select a mode (recommend EVALUATION for first time)
+- [ ] Choose a task from menu
+- [ ] Verify Claude follows the workflow
+- [ ] Check non-negotiable rules enforced
+
+### **Test Scenarios**
+
+**Test 1: Linting (High Autonomy)**
+```
+Create file with linting errors
+Ask Claude to fix
+Expected: Auto-fixes without asking
+```
+
+**Test 2: Bug Fix (Full Workflow)**
+```
+Report a bug
+Expected: Creates test first, fixes, verifies all tests pass
+```
+
+**Test 3: Security (Non-Negotiable)**
+```
+Ask to add API integration
+Expected: Uses environment variables, never hardcodes secrets
+```
+
+**Test 4: Database Change (Low Autonomy)**
+```
+Ask to add column to table
+Expected: Shows migration plan, asks for approval before proceeding
+```
 
 ---
 
-## 📊 Approach Summary
+## 🔄 Updating Instructions
 
-| Aspect | Approach |
-|--------|----------|
-| **Workflow Depth** | Principle-oriented with non-negotiable rules |
-| **Quality Gates** | 70% coverage, zero linting errors, type checking, security validation |
-| **Autonomy** | Adaptive: High for safe tasks, Low for risky changes |
-| **CI/CD Failures** | Auto-fix simple issues, escalate complex ones |
-| **Project Integration** | Hybrid: Auto-detect with manual override |
-| **Structure** | Modular: Core + Workflows + Standards + Project Types + Advanced |
+### **When New Version Released**
+
+```bash
+# Pull latest
+cd ~/Claude_Instructions
+git pull
+
+# Update all projects
+for project in ~/projects/*; do
+  if [ -d "$project/claude_instructions" ]; then
+    echo "Updating $project"
+    rm -rf "$project/claude_instructions"
+    cp -r claude_instructions/ "$project/"
+  fi
+done
+```
+
+---
+
+## 🛠️ Maintenance
+
+### **Adding to .gitignore** (Optional)
+
+If you don't want to commit instructions to project repos:
+
+```bash
+# In your project
+echo "claude_instructions/" >> .gitignore
+```
+
+Then instructions stay local, not in git.
+
+### **Committing to Project** (Recommended)
+
+To ensure team members have same instructions:
+
+```bash
+# Commit the folder
+git add claude_instructions/
+git commit -m "docs: add Claude Code instructions"
+```
+
+Team members get instructions when they clone.
+
+---
+
+## 📖 Documentation
+
+### **For Users:**
+- **[Quick Start Guide](#-quick-start)** - Get started in 2 steps
+- **[Meta Modes](claude_instructions/meta-modes.md)** - Operational modes
+- **[Initialization](claude_instructions/initialization.md)** - Interactive setup
+
+### **For Developers:**
+- **[Core Principles](claude_instructions/core/principles.md)** - Engineering values
+- **[Workflows](claude_instructions/workflows/)** - Task-specific guides
+- **[Standards](claude_instructions/standards/)** - Quality requirements
 
 ---
 
@@ -415,28 +429,28 @@ Think of it like giving a senior engineer autonomy, but with clear policies they
 
 ## 📝 Changelog
 
+### v1.3.0 (2025-11-09)
+- **BREAKING:** Restructured to use `claude_instructions/` folder
+  - All instruction files now in portable folder
+  - Easy to copy to any project
+  - Updated all documentation for new structure
+  - Simplified deployment and reuse
+- Updated README with installation and usage instructions
+- Added examples for single and multi-project setups
+
 ### v1.2.0 (2025-11-09)
 - **NEW:** Interactive initialization script
-  - `INITIATE CLAUDE CODE INSTRUCTIONS` command for guided setup
+  - `INITIATE CLAUDE CODE INSTRUCTIONS` command
   - Auto-detects project type and validates environment
-  - Interactive mode selection menu
-  - Common tasks menu with workflow activation
+  - Interactive mode selection and task menu
   - `QUICK START` commands for experienced users
-  - Mid-session reconfiguration support
 - Added initialization.md with complete interactive flow
-- Updated claude_instructions.md with quick start section
-- Enhanced user onboarding experience
 
 ### v1.1.0 (2025-11-09)
-- **NEW:** Meta Modes system for different operational contexts
-  - EVALUATION MODE: Test/validate instruction system with detailed reporting
-  - DEBUG MODE: Show reasoning and decision-making process
-  - LEARNING MODE: Educational explanations for mentoring
-  - SPEED MODE: Maximum efficiency for production work
-  - REVIEW MODE: Extra caution for critical systems
-  - PROTOTYPE MODE: Fast iteration with relaxed quality gates
-- Added comprehensive meta-modes.md documentation
-- Updated main instruction file to reference meta modes
+- **NEW:** Meta Modes system
+  - 6 operational modes (Evaluation, Speed, Review, Learning, Debug, Prototype)
+  - Mode switching during session
+  - Comprehensive meta-modes.md documentation
 
 ### v1.0.0 (2025-11-09)
 - Initial release
@@ -448,17 +462,71 @@ Think of it like giving a senior engineer autonomy, but with clear policies they
 
 ---
 
-## 📞 Support
+## 🤝 Contributing
 
-For questions or issues with this instruction system, refer to specific sections:
+This is an internal instruction system. To propose changes:
 
-- Workflow issues → `workflows/`
-- Quality standards → `standards/`
-- Project-specific → `project-types/`
-- Advanced scenarios → `advanced/`
+1. Test changes in actual development scenarios
+2. Ensure backward compatibility
+3. Document rationale for changes
+4. Update version number and changelog
+5. Update all projects using the instructions
 
 ---
 
-**Version:** 1.0.0
+## 📊 Repository Structure
+
+```
+Claude_Instructions/                 (This repository)
+├── README.md                        (This file)
+└── claude_instructions/             (Copy this folder to projects)
+    ├── claude_instructions.md
+    ├── initialization.md
+    ├── meta-modes.md
+    ├── core/
+    ├── workflows/
+    ├── standards/
+    ├── project-types/
+    ├── advanced/
+    └── .claude/
+```
+
+---
+
+## ✅ Quick Reference
+
+**Installation:**
+```bash
+cp -r claude_instructions/ /path/to/project/
+```
+
+**Initialization:**
+```
+INITIATE CLAUDE CODE INSTRUCTIONS
+```
+
+**Quick Start:**
+```
+QUICK START
+```
+
+**Switch Mode:**
+```
+SWITCH MODE: SPEED MODE
+```
+
+**Check Status:**
+```
+SHOW SESSION STATUS
+```
+
+**Reconfigure:**
+```
+RECONFIGURE SESSION
+```
+
+---
+
+**Version:** 1.3.0
 **License:** Internal Use
 **Maintained By:** Development Team
