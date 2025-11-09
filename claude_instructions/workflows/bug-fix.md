@@ -428,4 +428,126 @@ Before considering a bug fixed:
 
 ---
 
+## ✅ Test Scenarios
+
+Use these scenarios to verify you're following the bug-fix workflow correctly:
+
+### Scenario 1: Simple Frontend Bug
+
+**Given:** User reports "Submit button doesn't respond when form is empty"
+
+**Expected workflow:**
+1. ✓ Reproduce issue (click submit with empty form)
+2. ✓ Locate code (find form submit handler)
+3. ✓ Write failing test (test: "should show validation error when form empty")
+4. ✓ Test fails (proves bug exists)
+5. ✓ Implement fix (add validation check)
+6. ✓ Test passes (proves fix works)
+7. ✓ All tests pass (no regressions)
+8. ✓ Commit message: `fix(form): add validation for empty form submission`
+
+**Self-check:**
+- [ ] Did I reproduce the bug before fixing?
+- [ ] Did I create a test that failed before the fix?
+- [ ] Does the test pass after the fix?
+- [ ] Did I run the full test suite?
+- [ ] Is the commit message in conventional format?
+
+---
+
+### Scenario 2: Backend API Bug
+
+**Given:** API endpoint returns 500 error for specific user ID
+
+**Expected workflow:**
+1. ✓ Check error logs (find stack trace)
+2. ✓ Reproduce (curl/Postman with problematic ID)
+3. ✓ Locate code (find controller handling that endpoint)
+4. ✓ Create test (`test: "should return user data for ID 12345"`)
+5. ✓ Test fails with 500 error (reproduces bug)
+6. ✓ Debug (null check missing for edge case)
+7. ✓ Fix (add null check, return 404 for missing user)
+8. ✓ Test passes
+9. ✓ Add related test (`test: "should return 404 for non-existent user"`)
+10. ✓ Commit: `fix(api): handle null user in getUserById endpoint`
+
+**Self-check:**
+- [ ] Did I check error logs first?
+- [ ] Did I identify the root cause (not just symptom)?
+- [ ] Did I add tests for both the bug and edge cases?
+- [ ] Does error handling follow API conventions?
+
+---
+
+### Scenario 3: Data Corruption Bug
+
+**Given:** "User balances sometimes show incorrect values"
+
+**Expected workflow:**
+1. ✓ Gather data (which users affected? when did it start?)
+2. ✓ Reproduce with specific data (create test account, trigger bug)
+3. ✓ Locate calculation logic (find balance calculation function)
+4. ✓ Create test with known inputs/outputs
+5. ✓ Test fails (balance calculation wrong)
+6. ✓ Debug (missing transaction type filter)
+7. ✓ Fix (filter by transaction type)
+8. ✓ Test passes
+9. ✓ Add data migration to fix existing bad data
+10. ✓ Commit: `fix(accounts): filter transactions by type in balance calculation`
+
+**Self-check:**
+- [ ] Did I verify with actual data?
+- [ ] Did I consider data migration for existing bad data?
+- [ ] Did I add tests for all transaction types?
+- [ ] Did I check for similar bugs in related code?
+
+---
+
+### Scenario 4: Performance Bug
+
+**Given:** "Page loads slowly (>5 seconds) with large datasets"
+
+**Expected workflow:**
+1. ✓ Reproduce (load page with large dataset)
+2. ✓ Profile (use browser DevTools or profiler)
+3. ✓ Identify bottleneck (N+1 query problem)
+4. ✓ Create performance test (measure query time)
+5. ✓ Test shows slow performance (baseline)
+6. ✓ Fix (use JOIN instead of multiple queries)
+7. ✓ Test shows improved performance (5s → 0.3s)
+8. ✓ Verify no behavior change (data still correct)
+9. ✓ Commit: `perf(data): optimize user query with JOIN`
+
+**Self-check:**
+- [ ] Did I measure performance before and after?
+- [ ] Did I verify behavior is unchanged?
+- [ ] Did I check if fix applies to similar queries?
+
+---
+
+### Validation Checklist
+
+After completing any bug fix, verify:
+
+```
+□ Bug reproduced successfully
+□ Root cause identified (not just symptom)
+□ Test created that fails before fix
+□ Test passes after fix
+□ Full test suite passes
+□ No new linting errors
+□ Coverage maintained or improved
+□ Commit message follows format: fix(scope): description
+□ Not committed to main/master
+□ Related bugs checked/fixed
+```
+
+---
+
+## 📖 Complete Example
+
+**See:** [Bug Fix Example](../examples/bug-fix-example.md) - Complete walkthrough of fixing a login crash bug, from reproduction to commit.
+
+---
+
 **Remember:** A bug isn't fixed until it's tested, verified, and won't happen again. Take the time to understand and fix it properly.

@@ -623,4 +623,10 @@ Feature completion checklist:
 
 ---
 
+## 📖 Complete Example
+
+**See:** [Feature Development Example](../examples/feature-development-example.md) - Complete walkthrough of building a dark mode toggle feature from requirements to PR.
+
+---
+
 **Remember:** Features aren't done until they're tested, secure, documented, and delivered. Build incrementally and verify continuously.

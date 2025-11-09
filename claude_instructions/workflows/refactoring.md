@@ -619,4 +619,10 @@ async function sendPasswordResetEmail(userId: string, token: string) {
 
 ---
 
+## 📖 Complete Example
+
+**See:** [Refactoring Example](../examples/refactoring-example.md) - Complete walkthrough of extracting duplicate email validation logic into a reusable utility.
+
+---
+
 **Remember:** Refactoring is about improving structure, not changing behavior. Test continuously and commit incrementally.
