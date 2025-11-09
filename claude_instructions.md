@@ -1,8 +1,23 @@
 # Claude Development Instructions
 
-**Version:** 1.1.0
+**Version:** 1.2.0
 **Last Updated:** 2025-11-09
 **Approach:** Principle-Oriented with Non-Negotiable Guardrails
+
+---
+
+## 🚀 Quick Start
+
+**For interactive setup (recommended):**
+```
+INITIATE CLAUDE CODE INSTRUCTIONS
+```
+This runs an interactive initialization that guides you through project detection, mode selection, and task setup.
+
+**For manual setup:**
+Simply read this file and start working. No special command needed.
+
+**See:** [Initialization Guide](./initialization.md) for details on the interactive setup process.
 
 ---
 

@@ -1,6 +1,6 @@
 # Claude Development Instructions
 
-**Version:** 1.0.0
+**Version:** 1.2.0
 **Last Updated:** 2025-11-09
 
 A comprehensive, reusable instruction system for Claude Code that defines agentic workflows, best practices, and quality standards for software development projects.
@@ -21,19 +21,59 @@ This repository contains a modular instruction system that guides Claude through
 
 ## 🚀 Quick Start
 
-### For Each New Claude Code Session
+### **Method 1: Interactive Setup** (Recommended)
 
-Point Claude to the main instruction file:
+Start a new Claude Code session and type exactly:
+
+```
+INITIATE CLAUDE CODE INSTRUCTIONS
+```
+
+Claude will then:
+1. ✅ Load the complete instruction system
+2. 🔍 Auto-detect your project type (Next.js, Express, etc.)
+3. 🎛️ Present a menu to select operational mode
+4. ✅ Validate your development environment
+5. 📋 Show common tasks menu
+6. 🚀 Activate the appropriate workflow
+
+**Interactive Example:**
+```
+You: INITIATE CLAUDE CODE INSTRUCTIONS
+
+Claude:
+╔══════════════════════════════════════════════════════╗
+║  🤖 Claude Code Development Assistant v1.2.0        ║
+╚══════════════════════════════════════════════════════╝
+
+Loading...
+✓ Instructions loaded
+✓ Detected: Next.js Web Application
+
+🎛️ Select mode: [Shows 7 options]
+🎯 What would you like to do? [Shows task menu]
+```
+
+### **Method 2: Quick Start** (For Experienced Users)
+
+```
+QUICK START
+```
+
+Loads instructions, detects project, uses standard mode, no menus.
+
+Or with a specific mode:
+```
+QUICK START: SPEED MODE
+```
+
+### **Method 3: Manual** (Traditional)
 
 ```
 Read and follow the instructions in claude_instructions.md
 ```
 
-That's it! Claude will:
-1. Load the core principles and non-negotiable rules
-2. Auto-detect your project type (Next.js, Express, React Native, etc.)
-3. Apply appropriate workflows and standards
-4. Adapt autonomy based on task complexity
+Claude loads instructions silently and waits for your direction.
 
 ---
 
@@ -42,6 +82,8 @@ That's it! Claude will:
 ```
 Claude_Instructions/
 ├── claude_instructions.md          # Main entry point - START HERE
+├── initialization.md               # Interactive setup script
+├── meta-modes.md                   # Meta modes documentation
 │
 ├── core/                            # Fundamental principles
 │   ├── principles.md                # Core development principles
@@ -372,6 +414,18 @@ Think of it like giving a senior engineer autonomy, but with clear policies they
 ---
 
 ## 📝 Changelog
+
+### v1.2.0 (2025-11-09)
+- **NEW:** Interactive initialization script
+  - `INITIATE CLAUDE CODE INSTRUCTIONS` command for guided setup
+  - Auto-detects project type and validates environment
+  - Interactive mode selection menu
+  - Common tasks menu with workflow activation
+  - `QUICK START` commands for experienced users
+  - Mid-session reconfiguration support
+- Added initialization.md with complete interactive flow
+- Updated claude_instructions.md with quick start section
+- Enhanced user onboarding experience
 
 ### v1.1.0 (2025-11-09)
 - **NEW:** Meta Modes system for different operational contexts
