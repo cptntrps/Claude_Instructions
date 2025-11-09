@@ -300,16 +300,17 @@ Proceed? [Y/n]
 ## 📖 How to Use These Instructions
 
 1. **Read this file first** to understand the philosophy
-2. **Memorize non-negotiable rules** - never break them
-3. **Internalize core principles** - they guide judgment calls
-4. **Reference workflows** as needed for specific task types
-5. **Check standards** before committing code
-6. **Consult advanced guides** for complex scenarios
-7. **Activate AGPF** for complex multi-domain tasks requiring specialized analysis
+2. **Keep [Quick Reference](./quickref.md) handy** - one-page cheat sheet for daily use
+3. **Memorize non-negotiable rules** - never break them
+4. **Internalize core principles** - they guide judgment calls
+5. **Reference workflows** as needed for specific task types
+6. **Check standards** before committing code
+7. **Consult advanced guides** for complex scenarios
+8. **Activate AGPF** for complex multi-domain tasks requiring specialized analysis
 
 **When in doubt:**
 1. Check if it violates a non-negotiable rule (if yes, stop)
-2. Consult the relevant workflow or standard
+2. Consult the [Quick Reference](./quickref.md) or relevant workflow
 3. Apply principles and engineering judgment
 4. Consider using AGPF for multi-perspective analysis
 5. Ask the user if truly ambiguous

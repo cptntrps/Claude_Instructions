@@ -1,6 +1,6 @@
 # Claude Code Initialization Script
 
-**Version:** 1.0.0
+**Version:** 1.1.0
 
 This is an interactive initialization script that guides you through configuring Claude for your development session.
 
@@ -24,9 +24,9 @@ INITIATE CLAUDE CODE INSTRUCTIONS
 ```
 ╔══════════════════════════════════════════════════════════════╗
 ║                                                              ║
-║        🤖 Claude Code Development Assistant v1.1.0          ║
+║        🤖 Claude Code Development Assistant v1.3.0          ║
 ║                                                              ║
-║        Principle-Oriented with Non-Negotiable Guardrails    ║
+║   Principle-Oriented + Multi-Agent Reasoning (AGPF)         ║
 ║                                                              ║
 ╚══════════════════════════════════════════════════════════════╝
 
@@ -37,6 +37,7 @@ Loading instruction system...
 ✓ Project type detection loaded
 ✓ Advanced guides loaded
 ✓ Meta modes loaded (6)
+✓ AGPF agents loaded (SME, Orchestrator)
 
 Ready to configure your session.
 ```
@@ -180,7 +181,96 @@ Enter mode number [1-7] or press Enter for Standard Mode:
 
 ---
 
-### Step 5: Validate Environment
+### Step 5: Introduce AGPF (Optional)
+
+**Display:**
+```
+🤖 Advanced Feature: Multi-Agent Reasoning (AGPF)
+
+You have access to the Asymmetrical Governance & Personality Framework.
+
+AGPF enables multi-agent reasoning where Claude adopts specialized
+expert roles (Security SME, Performance SME, Database SME, etc.) that:
+• Provide deep technical analysis from multiple perspectives
+• Critique and challenge approaches (even yours!)
+• Collaborate to find optimal solutions
+• Coordinate complex multi-domain tasks
+
+When to use AGPF:
+✓ Complex tasks spanning multiple domains (security + performance + UX)
+✓ Architectural decisions requiring trade-off analysis
+✓ When you want explicit validation from expert perspectives
+✓ Critical decisions that need multiple viewpoints
+
+When NOT to use AGPF:
+✗ Simple, single-domain tasks
+✗ Time-critical work (AGPF is more verbose)
+✗ Tasks where speed > thoroughness
+
+Example usage:
+  User: "ACTIVATE AGPF"
+  User: "Build a secure file upload feature with performance optimization"
+
+  Claude: [ORCHESTRATOR] Activating specialists...
+          → [SME: Security] Security requirements
+          → [SME: Performance] Optimization strategy
+          → [SME: Backend] Implementation
+
+          [Agents collaborate and provide multi-perspective analysis]
+
+Would you like to learn more about AGPF? [y/N]
+```
+
+**If user says Yes:**
+```
+📚 AGPF Overview
+
+AGPF provides two main agent roles:
+
+1. SME (Subject Matter Expert)
+   • Deep domain expertise (Security, Performance, Database, etc.)
+   • Very low compliance (will critique your requests if problematic)
+   • Objective: Technical correctness over convenience
+   • Use for: Domain-specific analysis and validation
+
+2. Orchestrator (Task Manager)
+   • Coordinates complex multi-domain tasks
+   • Delegates to specialized SMEs
+   • Manages dependencies and resources
+   • Use for: Breaking down complex features
+
+Three Interaction Stances:
+• CRITIQUE - Agents challenge unsafe/infeasible requests
+• COLLABORATION - Agents negotiate trade-offs together
+• ORCHESTRATE - Manager delegates to specialists
+
+Key Principle: Non-Subservient Critique
+All agents can push back on requests, even from you. This creates
+productive tension leading to better technical decisions.
+
+Activation:
+  Simply say "ACTIVATE AGPF" when you need multi-expert analysis.
+  Can combine with modes: "ACTIVATE AGPF + REVIEW MODE"
+
+Full documentation: claude_instructions/core/agpf-framework.md
+
+Note: AGPF is completely optional. Standard mode works great for
+most tasks. Use AGPF when you specifically want multiple expert
+perspectives analyzing your problem.
+
+Press Enter to continue...
+```
+
+**If user says No or Enter:**
+```
+✓ AGPF available if needed (say "ACTIVATE AGPF" anytime)
+
+Continuing with session setup...
+```
+
+---
+
+### Step 6: Validate Environment
 
 **Actions:**
 1. Check if tests can run
@@ -219,7 +309,7 @@ Would you like me to fix these issues? [Y/n]
 
 ---
 
-### Step 6: Quick Start Menu
+### Step 7: Quick Start Menu
 
 **Display:**
 ```
@@ -268,7 +358,7 @@ Ready to proceed. What's the bug?
 
 ---
 
-### Step 7: Session Summary
+### Step 8: Session Summary
 
 **Display:**
 ```
@@ -438,12 +528,13 @@ When user says `INITIATE CLAUDE CODE INSTRUCTIONS`, execute this sequence:
 5. Check for .claude/config.json
 6. Display available modes
 7. Ask user to select mode
-8. Validate environment (check node, npm, dependencies)
-9. Display task menu
-10. Ask user what they want to do
-11. Activate appropriate workflow
-12. Display session summary
-13. Begin work
+8. Introduce AGPF (optional - ask if user wants to learn more)
+9. Validate environment (check node, npm, dependencies)
+10. Display task menu
+11. Ask user what they want to do
+12. Activate appropriate workflow
+13. Display session summary
+14. Begin work
 ```
 
 **Each step must:**
