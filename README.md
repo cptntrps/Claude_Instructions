@@ -114,6 +114,66 @@ See [`.claude/config.schema.json`](.claude/config.schema.json) for all available
 
 ---
 
+## 🎛️ Meta Modes
+
+**NEW in v1.1.0:** Activate different operational modes for specific contexts.
+
+### Available Modes
+
+**🔍 EVALUATION MODE** - For testing the instruction system itself
+```
+Activate EVALUATION MODE.
+```
+- Provides detailed reporting with citations
+- Explains which workflow/principle is being followed
+- Reports on non-negotiable compliance
+- Perfect for validating the instruction system
+
+**⚡ SPEED MODE** - For maximum efficiency
+```
+Activate SPEED MODE.
+```
+- Minimal communication, maximum action
+- Still enforces all non-negotiables
+- Perfect for routine tasks and production work
+
+**🔒 REVIEW MODE** - For critical systems
+```
+Activate REVIEW MODE.
+```
+- Extra caution, asks before ALL changes
+- Shows full diffs and impact analysis
+- Perfect for production databases, financial systems
+
+**📚 LEARNING MODE** - For education and mentoring
+```
+Activate LEARNING MODE.
+```
+- Explains WHY, not just WHAT
+- References documentation and best practices
+- Perfect for training and knowledge building
+
+**🐛 DEBUG MODE** - For troubleshooting
+```
+Activate DEBUG MODE.
+```
+- Shows reasoning and decision-making
+- Explains tool choices and alternatives
+- Perfect for understanding Claude's behavior
+
+**🚀 PROTOTYPE MODE** - For fast exploration
+```
+Activate PROTOTYPE MODE.
+```
+- Relaxed quality gates (50% coverage OK)
+- Focus on working code over perfect code
+- Still enforces security rules
+- Perfect for POCs and spike work
+
+**See [meta-modes.md](meta-modes.md) for complete documentation.**
+
+---
+
 ## 🔑 Key Features
 
 ### 1. Principle-Oriented with Guardrails
@@ -312,6 +372,17 @@ Think of it like giving a senior engineer autonomy, but with clear policies they
 ---
 
 ## 📝 Changelog
+
+### v1.1.0 (2025-11-09)
+- **NEW:** Meta Modes system for different operational contexts
+  - EVALUATION MODE: Test/validate instruction system with detailed reporting
+  - DEBUG MODE: Show reasoning and decision-making process
+  - LEARNING MODE: Educational explanations for mentoring
+  - SPEED MODE: Maximum efficiency for production work
+  - REVIEW MODE: Extra caution for critical systems
+  - PROTOTYPE MODE: Fast iteration with relaxed quality gates
+- Added comprehensive meta-modes.md documentation
+- Updated main instruction file to reference meta modes
 
 ### v1.0.0 (2025-11-09)
 - Initial release

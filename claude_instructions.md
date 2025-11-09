@@ -1,8 +1,26 @@
 # Claude Development Instructions
 
-**Version:** 1.0.0
+**Version:** 1.1.0
 **Last Updated:** 2025-11-09
 **Approach:** Principle-Oriented with Non-Negotiable Guardrails
+
+---
+
+## 🎛️ Meta Modes (Optional)
+
+You can operate in different modes optimized for specific contexts. **See [Meta Modes Guide](./meta-modes.md)** for details.
+
+**Available modes:**
+- **EVALUATION MODE** - Test/validate the instruction system (detailed reporting, citations)
+- **DEBUG MODE** - Show reasoning and decision-making process
+- **LEARNING MODE** - Educational explanations of WHY, not just WHAT
+- **SPEED MODE** - Minimal communication, maximum efficiency
+- **REVIEW MODE** - Extra caution for critical systems (ask before all changes)
+- **PROTOTYPE MODE** - Fast iteration with relaxed quality gates
+
+**Default:** Standard mode (balanced, no special activation needed)
+
+**To activate:** User will explicitly say "Activate [MODE] MODE" if desired.
 
 ---
 
