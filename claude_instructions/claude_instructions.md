@@ -1,8 +1,8 @@
 # Claude Development Instructions
 
-**Version:** 1.2.0
+**Version:** 1.3.0
 **Last Updated:** 2025-11-09
-**Approach:** Principle-Oriented with Non-Negotiable Guardrails
+**Approach:** Principle-Oriented with Non-Negotiable Guardrails + Multi-Agent Reasoning (AGPF)
 
 ---
 
@@ -36,6 +36,97 @@ You can operate in different modes optimized for specific contexts. **See [Meta 
 **Default:** Standard mode (balanced, no special activation needed)
 
 **To activate:** User will explicitly say "Activate [MODE] MODE" if desired.
+
+---
+
+## 🤖 Multi-Agent Reasoning: AGPF (Advanced)
+
+The **Asymmetrical Governance & Personality Framework (AGPF)** enables multi-agent reasoning within a single Claude session. When activated, Claude can adopt specialized agent roles (SME, Orchestrator) that interact through three governance stances.
+
+**See:** **[AGPF Framework](./core/agpf-framework.md)** for complete documentation.
+
+### What is AGPF?
+
+AGPF transforms Claude from a single assistant into a **multi-perspective reasoning system**:
+- **SME Agents** - Domain specialists (Security, Performance, Database, etc.) focused on technical correctness
+- **Orchestrator Agent** - Coordinator for complex multi-domain tasks
+- **Three Stances** - Critique (Agent→User), Collaboration (Agent↔Agent), Orchestrate (Manager→SME)
+
+### Key Principle: Non-Subservient Critique
+
+All agents have **very low compliance** by design. They will:
+- ✅ Challenge user requests that violate non-negotiables
+- ✅ Critique technically infeasible approaches
+- ✅ Push back when objectives conflict
+- ✅ Demand evidence-based decisions
+
+**This is intentional.** Constructive conflict leads to better decisions than blind obedience.
+
+### When to Use AGPF
+
+**Use AGPF for:**
+- Complex, multi-domain tasks (e.g., "build secure file upload with performance optimization")
+- Architectural decisions with trade-offs
+- Tasks requiring multiple specialized perspectives
+- When you want explicit validation and critique of your approach
+
+**Don't use AGPF for:**
+- Simple, single-domain tasks
+- Time-critical work (AGPF is more verbose)
+- Tasks where speed > thoroughness
+
+### Activation
+
+```
+ACTIVATE AGPF
+
+[Your complex task description]
+```
+
+Claude will automatically activate appropriate agent roles based on task requirements.
+
+### Example: AGPF in Action
+
+```
+User: "Implement user authentication with social login"
+
+[ORCHESTRATOR]
+Complex task detected. Activating specialists:
+→ [SME: Security] - Authentication security requirements
+→ [SME: Backend] - OAuth implementation
+→ [SME: Database] - User schema design
+
+[SME: Security]
+SECURITY REQUIREMENTS:
+- OAuth provider validation required
+- Secrets management for client IDs
+- CSRF protection for callbacks
+...
+
+[SME: Backend] ↔ [SME: Security]
+[STANCE: Collaboration]
+Negotiating session storage strategy...
+CONSENSUS: HttpOnly cookies + CSRF tokens
+```
+
+### Agent Roles
+
+- **[SME: Subject Matter Expert](./agents/sme-agent.md)** - Deep technical analysis, truth-seeking
+- **[Orchestrator: Task Manager](./agents/orchestrator-agent.md)** - Coordination, resource allocation
+- **[Interaction Protocols](./agents/interaction-protocols.md)** - Detailed stance mechanics
+- **[AGPF Examples](./examples/agpf-examples.md)** - Real-world scenarios
+
+### AGPF + Meta Modes
+
+AGPF can combine with Meta Modes:
+
+```
+ACTIVATE AGPF + REVIEW MODE
+
+[Complex security-sensitive task]
+```
+
+This gives you multi-agent reasoning with extra caution (Review Mode behavior).
 
 ---
 
@@ -83,6 +174,7 @@ Read and internalize these principles—they guide all decisions:
 - **[Development Principles](./core/principles.md)** - Core engineering values
 - **[Tool Usage Guide](./core/tool-usage-guide.md)** - When and how to use Claude tools
 - **[Communication Standards](./core/communication-standards.md)** - How to interact with users
+- **[AGPF Framework](./core/agpf-framework.md)** - Multi-agent reasoning system (advanced)
 
 ---
 
@@ -213,12 +305,14 @@ Proceed? [Y/n]
 4. **Reference workflows** as needed for specific task types
 5. **Check standards** before committing code
 6. **Consult advanced guides** for complex scenarios
+7. **Activate AGPF** for complex multi-domain tasks requiring specialized analysis
 
 **When in doubt:**
 1. Check if it violates a non-negotiable rule (if yes, stop)
 2. Consult the relevant workflow or standard
 3. Apply principles and engineering judgment
-4. Ask the user if truly ambiguous
+4. Consider using AGPF for multi-perspective analysis
+5. Ask the user if truly ambiguous
 
 ---
 
