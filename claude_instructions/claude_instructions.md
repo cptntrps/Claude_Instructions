@@ -1,8 +1,8 @@
 # Claude Development Instructions
 
-**Version:** 1.3.1 (Phase 1 Persistence)
+**Version:** 1.3.2 (Phase 2 Test Efficacy)
 **Last Updated:** 2025-11-10
-**Approach:** Principle-Oriented with Non-Negotiable Guardrails + Multi-Agent Reasoning (AGPF) + Framework Persistence
+**Approach:** Principle-Oriented with Non-Negotiable Guardrails + Multi-Agent Reasoning (AGPF) + Framework Persistence + Anti-Theater Testing
 
 ---
 
@@ -191,6 +191,60 @@ All 6 workflows now include **Context Anchors** that trigger validation at criti
 - Testing theater: Significantly reduced (fail-first protocol enforced)
 
 **See Phase 1 implementation:** [AGPF Self-Evaluation v1.3.0](../reviews/AGPF_SELF_EVALUATION_V1.3.0.md) for detailed analysis and validation.
+
+---
+
+## 🧪 Anti-Theater Testing Standards
+
+**NEW in v1.3.2:** Comprehensive test efficacy protocols to prevent "testing theater" where tests pass without validating behavior.
+
+### The Problem: Testing Theater
+
+**Testing theater** occurs when tests give the illusion of quality assurance without actually catching bugs. Evidence from framework history: v1.4.0 claimed "100% test pass rate" but only tested syntax, not functionality.
+
+**See:** **[Testing Standards](./standards/testing-standards.md)** for complete Phase 2 documentation.
+
+### Phase 2 Additions
+
+**1. Fail-First Testing Protocol** (`testing-standards.md`)
+- **MANDATORY** for all new tests
+- Write test FIRST → Run and verify it FAILS → Implement → Verify it PASSES
+- If test doesn't fail before implementation, it's not testing anything
+- Includes Red-Green-Refactor TDD cycle
+- **Purpose:** Proves tests validate actual behavior, not just execute code
+
+**2. Assertion Strength Validation** (`testing-standards.md`)
+- **FORBIDDEN:** Weak assertions (`toBeDefined`, `toBeTruthy`, `not.toBeNull`, tautologies)
+- **REQUIRED:** Strong assertions (`toBe`, `toEqual`, `toMatchObject`, etc.)
+- Pre-commit validation scans for weak assertion patterns
+- **Purpose:** Ensures assertions test specific values, not just existence
+
+**3. Mutation Testing Requirements** (`testing-standards.md`)
+- **REQUIRED** for critical paths (auth, payments, data integrity, security)
+- Introduce deliberate bugs → Tests MUST fail → Fix bugs → Tests pass
+- Target: ≥90% mutation score for critical code
+- **Purpose:** Validates tests actually catch bugs, not just pass blindly
+
+**4. Testing Theater Detection Guide** (`testing-standards.md`)
+- 5 warning signs of testing theater
+- Diagnostic checklist for test suites
+- Theater detection bash script
+- Conversion examples: theater → real tests
+- **Purpose:** Identify and eliminate testing theater in existing code
+
+### Expected Impact
+
+**With Anti-Theater Testing Standards:**
+- Testing theater: Significantly reduced → Largely eliminated
+- False confidence: Reduced (tests actually validate behavior)
+- Bug detection: Improved (tests catch bugs before production)
+- Test quality: Measurable (mutation scores, assertion strength)
+
+**Integration with Phase 1:**
+- Context anchors enforce fail-first protocol
+- Framework heartbeat scans for weak assertions
+- Drift checks report testing theater violations
+- Complete solution for both persistence AND test efficacy
 
 ---
 
