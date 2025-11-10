@@ -24,6 +24,63 @@ Before any deployment:
 
 ---
 
+## 🔄 Framework Heartbeat Integration
+
+**This workflow integrates with the Framework Heartbeat Protocol to ensure deployment safety.**
+
+### Context Anchors (Auto-triggered)
+
+These checkpoints trigger framework validation at critical workflow points:
+
+**[CONTEXT ANCHOR: Deployment Start]**
+- Re-read all 7 deployment non-negotiables
+- Verify REVIEW mode active (or switch to it for safety)
+- Confirm: Will validate ALL gates before deployment
+
+**[CONTEXT ANCHOR: Pre-Deployment Validation]**
+- Run complete validation checklist
+- Zero shortcuts allowed (all tests, build, linting, types)
+- Security vulnerabilities must be addressed (not deferred)
+
+**[CONTEXT ANCHOR: Before Deployment Execute]**
+- Final framework drift check
+- Verify all non-negotiables passed
+- If ANY gate failed: STOP, fix, re-validate
+
+**[CONTEXT ANCHOR: Post-Deployment]**
+- Framework heartbeat after deployment completes
+- Verify deployment success
+- Monitor for issues
+
+### Manual Framework Commands
+
+During deployment, you can use:
+
+- `SHOW SESSION STATUS` - Verify REVIEW mode active (recommended)
+- `REFRESH FRAMEWORK` - Before starting deployment process
+- `FRAMEWORK DRIFT CHECK` - **REQUIRED** before deployment execution
+
+**Purpose:** Deployments are HIGH RISK. Context anchors enforce complete validation before code reaches production.
+
+### Deployment Safety Protocol
+
+**MANDATORY steps:**
+1. `FRAMEWORK DRIFT CHECK` - Verify framework compliance
+2. Run ALL quality gates (tests, lint, build, types)
+3. If gates pass → Proceed
+4. If gates fail → STOP, fix, re-run gates
+5. Post-deployment: Verify and monitor
+
+**Never deploy if:**
+- Any test failing
+- Any linting errors
+- Build fails
+- Type checking fails
+- Security vulnerabilities unresolved
+- Framework drift check shows violations
+
+---
+
 ## 📋 Pre-Deployment Checklist
 
 ### Code Quality

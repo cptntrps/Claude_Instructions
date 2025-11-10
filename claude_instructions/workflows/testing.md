@@ -20,6 +20,55 @@ Framework for writing and maintaining tests.
 
 ---
 
+## 🔄 Framework Heartbeat Integration
+
+**This workflow integrates with the Framework Heartbeat Protocol and fights testing theater.**
+
+### Context Anchors (Auto-triggered)
+
+These checkpoints trigger framework validation at critical workflow points:
+
+**[CONTEXT ANCHOR: Testing Workflow Start]**
+- Re-read non-negotiables for testing
+- **CRITICAL:** Re-read fail-first protocol (Phase 2 will add this)
+- Confirm: Tests will fail first, then pass after implementation
+
+**[CONTEXT ANCHOR: Before Writing Test]**
+- Identify what behavior we're validating
+- Determine what bug this test should catch
+- Plan: Write test → Verify it fails → Implement → Verify it passes
+
+**[CONTEXT ANCHOR: After Writing Test]**
+- **CRITICAL:** Run test and verify it FAILS
+- If test passes before implementation: Test is not testing anything (theater)
+- If test doesn't fail: Revise test or implementation
+
+**[CONTEXT ANCHOR: Testing Complete]**
+- Framework heartbeat if 20+ messages since last
+- Verify no weak assertions (toBeDefined, toBeTruthy)
+- Check coverage meets minimums (≥70% overall, ≥80% critical)
+
+### Manual Framework Commands
+
+During testing, you can use:
+
+- `SHOW SESSION STATUS` - Verify you're still in testing workflow
+- `REFRESH FRAMEWORK` - If writing extensive test suites
+- `FRAMEWORK DRIFT CHECK` - Before committing tests
+
+**Purpose:** Testing workflow is where "testing theater" happens most often. Context anchors enforce fail-first protocol to ensure tests actually validate behavior.
+
+### Anti-Theater Checklist
+
+Before committing tests, verify:
+- [ ] Every test failed before implementation
+- [ ] No weak assertions (toBeDefined, toBeTruthy, expect(true))
+- [ ] Coverage ≥ minimums
+- [ ] Tests validate behavior, not just execute code
+- [ ] Can explain what bug each test catches
+
+---
+
 ## 📋 Test Types
 
 ### Unit Tests

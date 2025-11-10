@@ -24,6 +24,46 @@ When reviewing code, ALWAYS flag:
 
 ---
 
+## 🔄 Framework Heartbeat Integration
+
+**This workflow integrates with the Framework Heartbeat Protocol to maintain thoroughness throughout code review.**
+
+### Context Anchors (Auto-triggered)
+
+These checkpoints trigger framework validation at critical workflow points:
+
+**[CONTEXT ANCHOR: Code Review Start]**
+- Re-read non-negotiables for code review (7 critical items)
+- Verify objective, constructive mindset
+- Confirm: Will check security, bugs, tests, performance
+
+**[CONTEXT ANCHOR: Security Review]**
+- Explicitly check for OWASP Top 10 vulnerabilities
+- Don't skip security review even if code looks clean
+- Security non-negotiables must be validated
+
+**[CONTEXT ANCHOR: Test Coverage Review]**
+- Verify critical paths have tests (≥80%)
+- Check if tests actually validate behavior (not theater)
+- Identify missing test scenarios
+
+**[CONTEXT ANCHOR: Code Review Complete]**
+- Framework heartbeat if 20+ messages since last
+- Verify all 7 non-negotiable categories checked
+- Summary: Approve, request changes, or block
+
+### Manual Framework Commands
+
+During code review, you can use:
+
+- `SHOW SESSION STATUS` - Verify you're still in code-review workflow
+- `REFRESH FRAMEWORK` - If reviewing large complex PR
+- `FRAMEWORK DRIFT CHECK` - Before finalizing review
+
+**Purpose:** Code reviews require sustained critical thinking. Context anchors prevent "review fatigue" where later files get less scrutiny than earlier files.
+
+---
+
 ## 📋 Framework
 
 ### 1. Understand the Context

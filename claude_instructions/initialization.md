@@ -561,6 +561,341 @@ Initialization is successful when:
 
 ---
 
+## 🎮 User Control Commands (Session Management)
+
+These commands give users control over framework state during active sessions.
+
+### SHOW SESSION STATUS
+
+**Purpose:** Display complete framework state and compliance status
+
+**When user types:** `SHOW SESSION STATUS`
+
+**Agent executes:**
+
+```markdown
+[Framework Status - User Requested]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📊 COMPLETE FRAMEWORK STATUS
+
+Mode: [CURRENT MODE NAME]
+AGPF: [Active/Inactive]
+Workflow: [CURRENT WORKFLOW]
+
+Non-Negotiables Status:
+✅ Never commit secrets
+✅ All tests must pass before commit
+✅ Always validate inputs
+✅ Zero linting errors before commit
+✅ Conventional commits required
+
+Session Progress:
+• Messages: [N]
+• Tasks completed: [N]
+• Last heartbeat: Message [N]
+• Next heartbeat: Message [N]
+
+Compliance: [All checks passing ✓ | Issues detected ⚠️]
+
+[IF AGPF Active]
+Active AGPF Agents:
+• [List of active SME agents and their domains]
+• [ORCHESTRATOR status]
+
+[IF Issues Detected]
+⚠️  Issues Found:
+• [List specific violations or concerns]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**Example Output:**
+
+```
+[Framework Status - User Requested]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📊 COMPLETE FRAMEWORK STATUS
+
+Mode: REVIEW MODE
+AGPF: Active (3 SMEs + Orchestrator)
+Workflow: Database Migration
+
+Non-Negotiables Status:
+✅ Never commit secrets
+✅ All tests must pass before commit
+✅ Always validate inputs
+✅ Zero linting errors before commit
+✅ Conventional commits required
+
+Session Progress:
+• Messages: 47
+• Tasks completed: 2
+• Last heartbeat: Message 40
+• Next heartbeat: Message 60
+
+Compliance: All checks passing ✓
+
+Active AGPF Agents:
+• [SME: Database] - Schema validation
+• [SME: Security] - Migration safety review
+• [SME: Performance] - Query optimization
+• [ORCHESTRATOR] - Coordinating migration phases
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+---
+
+### REFRESH FRAMEWORK
+
+**Purpose:** Reload core principles and reactivate current workflow (fights drift)
+
+**When user types:** `REFRESH FRAMEWORK`
+
+**Agent executes:**
+
+```markdown
+1. Re-read core/principles.md (non-negotiables)
+2. Re-read quickref.md (Persistence Card)
+3. Re-read active workflow file (if one is active)
+4. Re-read active mode behavior (if non-standard mode)
+5. If AGPF active, re-read agent definitions
+6. Reset internal state to match loaded framework
+7. Display confirmation
+```
+
+**Display:**
+
+```
+[Framework Refresh Initiated]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Reloading framework...
+
+✓ Core principles reloaded
+✓ Non-negotiables verified (5 rules)
+✓ [MODE NAME] behavior reloaded
+✓ [WORKFLOW NAME] workflow reactivated
+[IF AGPF] ✓ AGPF agent definitions reloaded
+
+Framework awareness restored to 100%.
+
+Current State:
+• Mode: [MODE]
+• AGPF: [Active/Inactive]
+• Workflow: [WORKFLOW]
+• Non-negotiables: All active ✓
+
+Ready to continue. Framework fully refreshed.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**When to use:**
+- Agent behavior seems inconsistent with selected mode
+- Long session (>80 messages) and quality seems degraded
+- After complex debugging session
+- User notices agent forgetting framework principles
+- Preventative: Before starting critical work
+
+**Note:** Unlike automatic heartbeats (every 20 messages), REFRESH FRAMEWORK can be triggered anytime by the user to force an immediate, complete framework reload.
+
+---
+
+### FRAMEWORK DRIFT CHECK
+
+**Purpose:** Validate last 20 messages (or all messages if <20) for framework violations
+
+**When user types:** `FRAMEWORK DRIFT CHECK`
+
+**Agent executes:**
+
+```markdown
+1. Review last 20 messages (user + agent messages)
+2. Check for non-negotiable violations
+3. Check for mode behavior inconsistencies
+4. Check for workflow step violations
+5. Check AGPF consistency (if active)
+6. Generate detailed report
+7. If violations found, explain and propose corrections
+```
+
+**Display (No Violations):**
+
+```
+[Framework Drift Check - Last 20 Messages]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Analyzing messages [N-20] through [N]...
+
+Non-Negotiables Check:
+✓ No secrets committed
+✓ All commits had passing tests
+✓ Input validation applied
+✓ No linting errors committed
+✓ Conventional commits used
+
+Mode Consistency ([MODE NAME]):
+✓ Output verbosity appropriate for mode
+✓ Autonomy levels followed
+✓ User interactions match mode behavior
+
+Workflow Adherence ([WORKFLOW NAME]):
+✓ Following workflow steps correctly
+✓ No skipped critical steps
+✓ Test-driven approach maintained
+
+[IF AGPF Active]
+AGPF Consistency:
+✓ Multi-agent formatting maintained
+✓ Explicit stance declarations used
+✓ [ORCHESTRATOR] coordinating properly
+✓ [SME: Domain] analysis consistent
+
+RESULT: ✅ NO DRIFT DETECTED
+
+Framework adherence: Excellent
+Continue current approach.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**Display (Violations Found):**
+
+```
+[Framework Drift Check - Last 20 Messages]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Analyzing messages [N-20] through [N]...
+
+⚠️  DRIFT DETECTED - Issues Found:
+
+Non-Negotiable Violations:
+❌ Message 35: Committed code with linting errors
+   Location: src/components/Button.tsx
+   Violation: "Zero linting errors before commit"
+
+Mode Consistency Issues:
+⚠️  Message 38-42: REVIEW mode but made changes without asking
+   Expected: Ask before all changes
+   Actual: Auto-executed 3 changes
+   Severity: MEDIUM
+
+AGPF Consistency Issues:
+⚠️  Message 45-50: AGPF active but using single-agent output
+   Expected: [ORCHESTRATOR] or [SME: Domain] format
+   Actual: Standard output without agent tags
+   Severity: HIGH
+
+CORRECTIVE ACTIONS NEEDED:
+
+1. Revert commit with linting errors (message 35)
+   - Fix linting issues
+   - Re-commit with clean code
+
+2. For future changes in REVIEW mode:
+   - Always ask before implementing
+   - Show proposed changes first
+   - Wait for approval
+
+3. If AGPF should remain active:
+   - Resume multi-agent formatting immediately
+   - OR: User can deactivate AGPF if single-agent preferred
+
+Would you like me to:
+A) Apply corrective actions automatically
+B) Explain each issue in detail
+C) Deactivate AGPF and continue single-agent
+D) Other (specify)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**When to use:**
+- Suspecting framework not being followed
+- After receiving unexpected behavior
+- Before critical operations (deploy, schema changes)
+- Periodically during long sessions (user discretion)
+- When you want explicit validation of framework adherence
+
+**Note:** This is a diagnostic tool. It doesn't change framework state, just reports on compliance.
+
+---
+
+### Power User: QUICK START with Workflow
+
+**Enhanced QUICK START command for experienced users**
+
+**Format:** `QUICK START: [MODE], [WORKFLOW]`
+
+**Examples:**
+
+```
+QUICK START: SPEED MODE, BUG FIX
+QUICK START: REVIEW MODE, DATABASE MIGRATION
+QUICK START: DEBUG MODE, PERFORMANCE OPTIMIZATION
+```
+
+**Agent executes:**
+
+```markdown
+1. Load framework silently (no menus)
+2. Detect project type
+3. Activate specified mode
+4. Activate specified workflow
+5. Display compact status
+6. Ready for work immediately
+```
+
+**Display:**
+
+```
+✓ Framework loaded
+✓ Project: Next.js Web Application
+✓ Mode: SPEED MODE
+✓ Workflow: Bug Fix
+✓ Environment: Ready
+
+What's the bug?
+```
+
+**Benefits:**
+- One-line initialization
+- No interactive menus
+- Instant activation
+- Power user efficiency
+
+**Available Workflows:**
+- `BUG FIX`
+- `FEATURE DEVELOPMENT`
+- `REFACTORING`
+- `CODE REVIEW`
+- `TESTING`
+- `DEPLOYMENT`
+- `DATABASE MIGRATION`
+- `PERFORMANCE OPTIMIZATION`
+
+---
+
+## 🔄 Command Usage Tips
+
+**For new sessions:**
+- Use `INITIATE CLAUDE CODE INSTRUCTIONS` for guided setup
+- Use `QUICK START` for fast standard mode
+- Use `QUICK START: MODE, WORKFLOW` for power users
+
+**During active sessions:**
+- Use `SHOW SESSION STATUS` when uncertain about framework state
+- Use `REFRESH FRAMEWORK` when behavior seems inconsistent
+- Use `FRAMEWORK DRIFT CHECK` before critical operations
+
+**Automatic vs. Manual:**
+- Framework heartbeats run automatically every 20 messages
+- User commands can be triggered anytime for immediate action
+- User commands override automatic scheduling
+
+**In different modes:**
+- SPEED: Commands show compact output
+- REVIEW: Commands show full detailed output
+- DEBUG: Commands include reasoning and analysis
+- All modes: Commands always execute (non-negotiable)
+
+---
+
 ## 💡 Examples
 
 ### Example 1: Full Initialization

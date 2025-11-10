@@ -22,6 +22,46 @@ Before marking a bug as fixed:
 
 ---
 
+## 🔄 Framework Heartbeat Integration
+
+**This workflow integrates with the Framework Heartbeat Protocol to maintain quality throughout bug fixing.**
+
+### Context Anchors (Auto-triggered)
+
+These checkpoints trigger framework validation at critical workflow points:
+
+**[CONTEXT ANCHOR: Bug Fix Start]**
+- Re-read non-negotiables for bug-fix workflow
+- Verify test-driven approach active
+- Confirm: Will create test → verify it fails → fix → verify it passes
+
+**[CONTEXT ANCHOR: Before Implementing Fix]**
+- Validate test actually fails with current code
+- This confirms we're testing the actual bug, not theater-testing
+- If test doesn't fail: Investigate further or revise test
+
+**[CONTEXT ANCHOR: After Implementing Fix]**
+- Run full test suite (not just the new test)
+- Verify no regressions introduced
+- Check linting status
+
+**[CONTEXT ANCHOR: Bug Fix Complete]**
+- Framework heartbeat if 20+ messages since last
+- All non-negotiables verified
+- Ready for next task or workflow change
+
+### Manual Framework Commands
+
+During bug fixing, you can use:
+
+- `SHOW SESSION STATUS` - Verify you're still in bug-fix workflow
+- `REFRESH FRAMEWORK` - If debugging session was complex and long
+- `FRAMEWORK DRIFT CHECK` - Before marking bug as fixed
+
+**Purpose:** These context anchors ensure framework awareness remains high even during intense debugging sessions that can span 50+ messages.
+
+---
+
 ## 📋 Framework
 
 ### 1. Understand the Bug

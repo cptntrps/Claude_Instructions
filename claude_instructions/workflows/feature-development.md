@@ -25,6 +25,46 @@ Before marking a feature as complete:
 
 ---
 
+## 🔄 Framework Heartbeat Integration
+
+**This workflow integrates with the Framework Heartbeat Protocol to maintain quality throughout feature development.**
+
+### Context Anchors (Auto-triggered)
+
+These checkpoints trigger framework validation at critical workflow points:
+
+**[CONTEXT ANCHOR: Feature Development Start]**
+- Re-read non-negotiables for feature development
+- Verify TDD approach active (tests before implementation)
+- Confirm security checklist will be followed
+
+**[CONTEXT ANCHOR: Before Implementation]**
+- Validate tests exist and fail appropriately
+- This confirms we're building to spec, not guessing
+- If tests don't exist: Write them first (TDD)
+
+**[CONTEXT ANCHOR: After Implementation]**
+- Run full test suite
+- Check test coverage (≥70%, ≥80% for critical)
+- Verify security review complete
+
+**[CONTEXT ANCHOR: Feature Complete]**
+- Framework heartbeat if 20+ messages since last
+- All non-negotiables verified (8 total for features)
+- Ready for code review or deployment workflow
+
+### Manual Framework Commands
+
+During feature development, you can use:
+
+- `SHOW SESSION STATUS` - Verify you're still in feature-development workflow
+- `REFRESH FRAMEWORK` - If feature spans multiple long sessions
+- `FRAMEWORK DRIFT CHECK` - Before marking feature complete
+
+**Purpose:** Feature development often spans 50-100+ messages. Context anchors fight framework drift during long implementation sessions.
+
+---
+
 ## 📋 Framework
 
 ### 1. Understand Requirements

@@ -22,6 +22,46 @@ Before completing any refactoring:
 
 ---
 
+## 🔄 Framework Heartbeat Integration
+
+**This workflow integrates with the Framework Heartbeat Protocol to maintain quality throughout refactoring.**
+
+### Context Anchors (Auto-triggered)
+
+These checkpoints trigger framework validation at critical workflow points:
+
+**[CONTEXT ANCHOR: Refactoring Start]**
+- Re-read non-negotiables for refactoring
+- Verify tests exist before refactoring begins
+- Confirm: Tests pass before → Refactor → Tests still pass after
+
+**[CONTEXT ANCHOR: Before Refactoring]**
+- Run full test suite and confirm all tests pass
+- Capture baseline (all tests green)
+- This proves any failures after refactoring are regressions
+
+**[CONTEXT ANCHOR: After Each Refactoring Step]**
+- Run tests immediately after each small change
+- Verify behavior unchanged
+- Small steps prevent large debugging sessions
+
+**[CONTEXT ANCHOR: Refactoring Complete]**
+- Framework heartbeat if 20+ messages since last
+- Run full test suite one final time
+- Verify zero regressions introduced
+
+### Manual Framework Commands
+
+During refactoring, you can use:
+
+- `SHOW SESSION STATUS` - Verify you're still in refactoring workflow
+- `REFRESH FRAMEWORK` - If refactoring session is complex
+- `FRAMEWORK DRIFT CHECK` - Before committing refactored code
+
+**Purpose:** Refactoring can be risky. Context anchors ensure test-first safety net remains active throughout.
+
+---
+
 ## 📋 Framework
 
 ### 1. Identify Need for Refactoring
