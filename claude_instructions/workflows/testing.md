@@ -2,6 +2,11 @@
 
 Framework for writing and maintaining tests.
 
+**Supporting a bug fix:** Keep [Bug Fix Workflow v2](./bug-fix.md) as the active
+contract when consulting this guide during a bug-fix task. Its scoped rules govern
+existing tests, assertion choice, verification depth, baseline failures, and
+checkpoints. The standalone testing defaults below do not replace that contract.
+
 ---
 
 ## 🎯 Core Principle

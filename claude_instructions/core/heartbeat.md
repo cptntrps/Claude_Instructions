@@ -3,7 +3,13 @@
 **Purpose:** Maintain framework awareness and prevent drift across long conversations
 
 **Version:** 1.0.0
-**Status:** ACTIVE - All agents must follow this protocol
+**Status:** Legacy default for workflows other than Bug Fix v2
+
+**Bug-fix exception:** [Bug Fix Workflow v2](../workflows/bug-fix.md) replaces
+this package's heartbeat requirement with evidence checkpoints before editing,
+publication, closure, and after interruption. Do not count messages or claim an
+automatic trigger for bug-fix work. An explicit user or project requirement for
+a real runtime checkpoint remains authoritative.
 
 ---
 

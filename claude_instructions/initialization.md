@@ -2,6 +2,12 @@
 
 **Version:** 1.1.0
 
+**Bug-fix routing update (2026-09-16):** When a bug-fix task is selected, load
+[Bug Fix Workflow v2](./workflows/bug-fix.md). Its scoped contract supersedes
+older testing, coverage, heartbeat, and closure summaries in this initialization
+guide. Do not activate message-count heartbeats or universal coverage targets
+for that workflow. Explicit user/project requirements and enforced gates remain.
+
 This is an interactive initialization script that guides you through configuring Claude for your development session.
 
 ---
@@ -340,17 +346,18 @@ Enter number [0-9] or describe your task:
 Activating: Bug Fix Workflow (workflows/bug-fix.md)
 
 This workflow will guide you through:
-1. Understanding the bug
-2. Locating the issue
-3. Creating a reproduction test
-4. Implementing the fix
-5. Verifying the solution
-6. Committing with proper message
+1. Establishing the expected behavior and baseline
+2. Reproducing the reported failure
+3. Diagnosing its cause
+4. Making the smallest complete correction
+5. Verifying the fix and classifying remaining failures
+6. Publishing evidence and completing the agreed delivery
 
-Non-Negotiable Reminders for Bug Fixes:
-✓ Create test that fails before fix
-✓ Ensure all tests pass after fix
-✓ Maintain test coverage ≥70%
+Bug-fix completion reminders:
+✓ Reuse an adequate existing test or add meaningful regression coverage
+✓ Verify the reported behavior and required checks
+✓ Prove independence before classifying a baseline failure
+✓ Never waive required acceptance or delivery with a follow-up
 ✓ Use conventional commit: "fix(scope): description"
 
 Ready to proceed. What's the bug?

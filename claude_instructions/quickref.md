@@ -2,6 +2,13 @@
 
 **One-page cheat sheet for daily development**
 
+**Bug-fix tasks:** [Workflow v2](./workflows/bug-fix.md) governs this package's
+testing, coverage, heartbeat, and closure defaults for bug fixes. Use an existing
+reproducer when adequate, verify affected behavior, classify remaining failures,
+and complete the agreed delivery. Older all-green, percentage, and message-count
+summaries below do not override that contract. User and project requirements and
+enforced gates still apply. A required failed check cannot be waived by a follow-up.
+
 ---
 
 ## 🚀 Getting Started
@@ -132,7 +139,7 @@ These rules MUST NEVER be violated, regardless of mode or circumstance:
 ### Workflow-Specific Reminders
 
 **IF Bug Fix Workflow:**
-1. Reproduce → 2. Write failing test → 3. Fix → 4. Verify all tests pass
+1. Establish baseline → 2. Reproduce → 3. Diagnose → 4. Fix → 5. Verify and classify failures → 6. Publish evidence and close at the agreed boundary
 
 **IF Feature Development:**
 1. Understand → 2. Design → 3. Write tests (TDD) → 4. Implement → 5. Review
@@ -379,11 +386,11 @@ Before committing, verify:
 
 **Bug Fix:**
 ```
-1. Reproduce issue
-2. Write failing test
-3. Fix implementation
-4. Verify test passes
-5. Commit: fix(scope): description
+1. Establish baseline and reproduce the reported failure
+2. Diagnose the cause; reuse or add meaningful regression coverage
+3. Make the smallest complete correction
+4. Verify required behavior and classify remaining failures
+5. Publish evidence and close at the agreed delivery boundary
 ```
 
 **New Feature:**

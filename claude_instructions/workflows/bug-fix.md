@@ -1,593 +1,627 @@
 # Bug Fix Workflow
 
-Framework for investigating and resolving bugs.
+**Workflow version:** 2.0.0
 
----
+**Updated:** 2026-09-16
 
-## 🎯 Core Principle
+**Status:** Revised procedure; limited execution evidence, not a benchmarked guarantee
 
-**Understand before fixing.** Bugs are symptoms—find the root cause, don't just patch symptoms.
+**Owner:** The implementing engineer or agent, subject to the project's authority
 
----
+Use this workflow to investigate and correct an existing defect. It covers
+application behavior, test failures, configuration, integrations, and operational
+faults. A bug report is a claim to investigate, not proof of a particular cause.
 
-## 🚨 Non-Negotiables
+**Sequence:** establish the contract → reproduce → diagnose → make a focused fix
+→ verify → classify remaining failures → publish evidence → close at the agreed
+delivery boundary.
 
-Before marking a bug as fixed:
+## Scope and precedence
 
-- ✋ **Create a test that reproduces the bug** (if feasible)
-- ✋ **Verify the test fails before your fix** (proves you found the issue)
-- ✋ **Verify the test passes after your fix** (proves fix works)
-- ✋ **Run full test suite** (ensure no regressions)
-- ✋ **No new linting errors**
+For bug-fix tasks, this document replaces this instruction package's older
+procedural defaults for testing, coverage, heartbeat reminders, and closure.
+That includes conflicting summaries in the main instructions, quick reference,
+initialization, modes, and linked testing guides. Consulting a supporting guide
+does not silently change the selected bug-fix contract.
 
----
+Explicit user instructions, applicable project rules, permissions, and enforced
+repository or deployment gates still govern. This document cannot waive them.
+An existing required CI failure still blocks merge when the repository requires
+green CI, even if the failure predates this change.
 
-## 🔄 Framework Heartbeat Integration
+This is a procedure for a person or agent. Markdown does not install a scheduler,
+persist a counter, run tests, or enforce a gate. Load the relevant sections when
+needed. Do not claim automatic enforcement without an actual runtime mechanism.
 
-**This workflow integrates with the Framework Heartbeat Protocol to maintain quality throughout bug fixing.**
+## Completion contract
 
-### Context Anchors (Auto-triggered)
+A completed bug fix must have:
 
-These checkpoints trigger framework validation at critical workflow points:
+- A specific description of expected and observed behavior.
+- Evidence that establishes the defect, or an explicit reproduction limitation.
+- A causal explanation supported by observations rather than guesswork.
+- The smallest complete correction, including necessary consumer changes.
+- Passing verification of the reported behavior and relevant neighboring behavior.
+- A result for each required gate: passed, failed, or not run with a reason.
+- Classification and disposition of every remaining failure encountered.
+- Publication and deployment evidence appropriate to the agreed scope.
+- A concise completion record with limitations and follow-up references.
 
-**[CONTEXT ANCHOR: Bug Fix Start]**
-- Re-read non-negotiables for bug-fix workflow
-- Verify test-driven approach active
-- Confirm: Will create test → verify it fails → fix → verify it passes
+Do not change assertions, delete tests, suppress errors, broaden permissions, or
+weaken gates merely to make the result green. Changing an incorrect assertion
+requires an independently established behavior contract.
 
-**[CONTEXT ANCHOR: Before Implementing Fix]**
-- Validate test actually fails with current code
-- This confirms we're testing the actual bug, not theater-testing
-- If test doesn't fail: Investigate further or revise test
+An existing regression test can satisfy the test requirement. Do not add a second
+test that only repeats the first or checks the spelling of the implementation.
 
-**[CONTEXT ANCHOR: After Implementing Fix]**
-- Run full test suite (not just the new test)
-- Verify no regressions introduced
-- Check linting status
+## Inputs and initial decisions
 
-**[CONTEXT ANCHOR: Bug Fix Complete]**
-- Framework heartbeat if 20+ messages since last
-- All non-negotiables verified
-- Ready for next task or workflow change
+Collect only information needed for the next decision. Read the issue, comments,
+linked evidence, repository instructions, and current state before asking for facts
+already available. Continue useful independent work while clarification is pending.
 
-### Manual Framework Commands
+| Input | What to establish | If missing |
+|---|---|---|
+| Target | Repository, component, version, environment | Locate it from evidence; ask if targets remain ambiguous |
+| Symptom | Actual result and user impact | Inspect logs or obtain a concrete example |
+| Contract | Expected result and acceptance criteria | Resolve competing interpretations before dependent edits |
+| Reproduction | Command, request, fixture, or observed sequence | Construct the smallest safe reproducer |
+| Authority | Allowed effects and delivery destination | Continue ordinary authorized work; ask only at an unresolved boundary |
+| Ownership | Current assignee and active work | Avoid racing another implementation |
+| Delivery | Local fix, submitted PR, merged source, or deployed behavior | Use the request and project conventions; report the boundary explicitly |
 
-During bug fixing, you can use:
+Opening task record, when useful:
 
-- `SHOW SESSION STATUS` - Verify you're still in bug-fix workflow
-- `REFRESH FRAMEWORK` - If debugging session was complex and long
-- `FRAMEWORK DRIFT CHECK` - Before marking bug as fixed
-
-**Purpose:** These context anchors ensure framework awareness remains high even during intense debugging sessions that can span 50+ messages.
-
----
-
-## 📋 Framework
-
-### 1. Understand the Bug
-
-**Gather information:**
-- Read the full bug report/issue
-- Understand expected vs. actual behavior
-- Note reproduction steps
-- Check error messages, stack traces, logs
-- Identify affected environment (dev, staging, production)
-
-**Questions to answer:**
-- What should happen?
-- What actually happens?
-- How do I reproduce it?
-- Is this a regression (worked before)?
-- How many users are affected?
-
-**Tools:**
-```
-- Read issue/ticket
-- Check relevant logs if available
-- Review related test files
+```text
+Issue: <identifier>
+Expected: <observable behavior>
+Observed: <observable failure>
+Target: <repository, revision, environment>
+Acceptance: <checks that establish resolution>
+Delivery: <required endpoint>
+Known constraints: <permissions, data, outage, active work>
 ```
 
----
+Use the existing issue or task record. Do not create a second reporting system for
+a small fix. Use the project's approved issue interface for updates.
 
-### 2. Locate the Issue
+## Choose the investigation depth
 
-**Exploration strategies:**
+Choose depth from impact, uncertainty, and affected boundaries. Line count alone
+does not establish risk: one authorization condition can be critical.
 
-**Strategy A - Error-Driven (if you have a stack trace):**
-```
-1. Find the file/line from stack trace
-2. Read that file
-3. Trace backwards to find root cause
-```
+| Situation | Appropriate depth | Typical evidence |
+|---|---|---|
+| Typo or documentation defect | Direct inspection and relevant validation | Corrected output, link check, or rendered result |
+| Deterministic code/configuration defect | Focused reproduction and neighboring checks | Same failure before; expected result after |
+| Shared library or interface change | Consumer analysis and broader regression checks | Producer and consumer results |
+| Authorization or data integrity defect | Isolated fixtures, negative cases, integrity checks | Allowed and denied behavior; preserved data |
+| Intermittent or concurrent failure | Controlled timing, load, or repeated observations | Failure rate, conditions, residual uncertainty |
+| Production incident | Containment plus recovery and observation | User-facing recovery, rollback readiness, root-cause follow-up |
 
-**Strategy B - Feature-Driven (no stack trace):**
-```
-1. Identify which feature/module is affected
-2. Use Task/Explore to find relevant files
-3. Read key files (controllers, services, etc.)
-4. Search for related functions with Grep
-```
+Do not impose a universal coverage percentage or mutation score. Honor an existing
+project threshold, then assess whether the affected behavior is actually tested.
+Coverage shows execution; it does not establish that assertions detect this defect.
 
-**Strategy C - Test-Driven:**
-```
-1. Find existing tests for the feature
-2. Read test files to understand expected behavior
-3. Read implementation files
-4. Identify discrepancy
-```
+## 1. Inspect the working state
 
-**Tools:**
-```
-- Grep for error messages or function names
-- Task/Explore for unfamiliar code areas
-- Read files in parallel once identified
-```
+Before editing, establish the baseline and preserve existing work:
 
----
-
-### 3. Reproduce the Bug
-
-**Create a failing test (when possible):**
-
-```javascript
-// Example - bug: user can login with unverified email
-
-describe('Authentication', () => {
-  it('should reject login for unverified email', async () => {
-    const user = await createUser({ emailVerified: false });
-
-    const response = await request(app)
-      .post('/api/auth/login')
-      .send({ email: user.email, password: 'password' });
-
-    expect(response.status).toBe(403);
-    expect(response.body.error).toMatch(/email not verified/i);
-  });
-});
-```
-
-**Verify test fails:**
 ```bash
-npm test -- login.test.ts
+git status --short
+git diff --stat
+git diff --cached --stat
+git branch --show-current
+git rev-parse HEAD
+git remote -v
 ```
 
-**If can't write test:**
-- Document reproduction steps
-- Test manually if needed
-- Note why automated test isn't feasible
+Inspect output locally. Do not copy credential-bearing remote URLs or sensitive
+diffs into task records. Record revisions and relevant paths, not whole environments.
 
----
+Identify which changes belong to this task. Never reset, stash, commit, or delete
+another person's changes simply to obtain a clean checkout. If the target overlaps
+active work, coordinate ownership or use an isolated checkout.
 
-### 4. Identify Root Cause
+When publication needs current remote source while the shared checkout is dirty:
 
-**Debug strategies:**
-
-**Add logging (temporarily):**
-```javascript
-console.log('User object:', JSON.stringify(user, null, 2));
-console.log('Email verified:', user.emailVerified);
-```
-
-**Trace execution flow:**
-- Follow the code path from entry point
-- Identify where behavior diverges from expected
-- Check conditionals, loops, async operations
-
-**Common bug patterns:**
-- Null/undefined values
-- Off-by-one errors
-- Race conditions (async)
-- Type coercion issues
-- Missing validation
-- Incorrect conditional logic
-- Scope issues
-
-**Questions to answer:**
-- Why does the current code produce the wrong result?
-- What assumption was incorrect?
-- Is this a logic error, data error, or timing error?
-
----
-
-### 5. Implement the Fix
-
-**Principles:**
-- Fix the root cause, not the symptom
-- Minimal scope - change only what's necessary
-- Follow existing patterns in the codebase
-- Consider edge cases
-
-**Example:**
-```javascript
-// Before (bug)
-async function login(email, password) {
-  const user = await User.findByEmail(email);
-  if (user && await user.verifyPassword(password)) {
-    return generateToken(user);
-  }
-  throw new Error('Invalid credentials');
-}
-
-// After (fixed)
-async function login(email, password) {
-  const user = await User.findByEmail(email);
-
-  if (!user || !await user.verifyPassword(password)) {
-    throw new Error('Invalid credentials');
-  }
-
-  // FIX: Check email verification
-  if (!user.emailVerified) {
-    throw new Error('Email not verified');
-  }
-
-  return generateToken(user);
-}
-```
-
-**Remove debug logging** added during investigation.
-
----
-
-### 6. Verify the Fix
-
-**Run the reproduction test:**
 ```bash
-npm test -- login.test.ts
+git fetch origin
+git worktree add -b fix/issue-123 ../issue-123-fix origin/main
 ```
 
-**Verify it now passes.**
+Use the actual remote and base branch; `main` is illustrative. Keep the original
+checkout intact. Check for an existing task branch before creating another.
+Private worktrees may lack ignored configuration, dependencies, or generated files;
+record those differences rather than misclassifying them as product regressions.
 
-**Run full test suite:**
+**Output:** a known revision, task-owned paths, and a safe editing location.
+
+## 2. Establish and reproduce the failure
+
+Start with the reported invocation or user path. A nearby command that passes is
+useful comparison evidence, but does not by itself reproduce or fix the report.
+
+Record:
+
+1. Working directory and code revision.
+2. Relevant dependency/runtime versions and non-secret configuration differences.
+3. Input data or fixture identity, redacted where necessary.
+4. Exact command or interaction sequence.
+5. Expected result, observed result, exit code, and failure location.
+
+Prefer an existing test that already exercises the behavior. Otherwise create a
+focused regression test or bounded reproducer before the fix where practical.
+Check why it fails: an unrelated import error does not prove an authentication
+assertion catches a defect. If the report itself is an import error, that failure
+is the relevant observation.
+
+### Reproduction routes
+
+| Evidence available | First useful action |
+|---|---|
+| Stack trace | Run the failing path; inspect the named frame and callers |
+| Broken UI behavior | Repeat the interaction; inspect request and state transitions |
+| Wrong data | Build a small fixture with independently known expected results |
+| Configuration mismatch | Compare the reported and working invocations |
+| Performance regression | Measure comparable input, environment, and timing before editing |
+| External outage | Separate local behavior from upstream availability or authorization |
+
+Use test data and approved environments. Do not reproduce a destructive report
+against live data when an isolated fixture can answer the question.
+
+### When reproduction is incomplete
+
+Do not invent a successful reproduction. State what was attempted and what is
+missing: data, environment, timing, permission, or access to the affected version.
+
+Historical logs, traces, and code analysis may support a diagnosis. Label that
+evidence accurately. A plausible correction can be prepared, but do not claim a
+verified resolution if a required behavior check remains unavailable.
+
+For an intermittent issue, set a bounded observation plan before repeated runs.
+Record attempts, failures, workload, and conditions. One passing retry does not
+establish either recovery or a fixed race.
+
+**Output:** a repeatable failure, or a precise statement of the evidence limit.
+
+## 3. Diagnose the cause
+
+Explain the causal chain: input or environment → executing path → incorrect
+assumption or operation → observed failure. Avoid starting with the desired patch.
+
+Use short, falsifiable hypotheses:
+
+| Hypothesis | Discriminating check | Interpretation |
+|---|---|---|
+| Invocation changes imports | Compare console launcher with module invocation | Different outcomes narrow the fault to startup/import context |
+| Wrong filter mixes account data | Add two accounts to a fixture | Cross-account totals expose the missing boundary |
+| Ordering causes a race | Control execution at the contested boundary | A forced interleaving supports the timing hypothesis |
+| External dependency is unavailable | Probe its documented health/auth path without secret output | Distinguishes local implementation from upstream failure |
+
+Change one relevant variable at a time where possible. Read contracts, call sites,
+configuration precedence, and existing tests. Inspect dependency code or official
+documentation when behavior remains uncertain.
+
+Debug output must be narrow and redacted. Do not dump complete user records,
+credentials, connection strings, or authorization headers. Remove temporary probes
+after diagnosis, or convert a useful one into appropriate production observability.
+
+Before implementation, answer:
+
+- Why does the failure occur under the reported conditions?
+- Why does the proposed correction address that cause?
+- Which neighboring behavior could the correction change?
+- What observation would disprove the diagnosis?
+
+**Output:** a supported cause and a bounded correction plan.
+
+## 4. Define verification and rollback
+
+Choose checks before changing code. The plan can be a few lines in the task record;
+it does not require a separate design document.
+
+### Verification layers
+
+1. **Reported behavior:** the exact reproducer or affected assertion.
+2. **Neighboring behavior:** normal use, boundary conditions, relevant failure cases.
+3. **Affected consumers:** callers, integrations, alternate invocation paths.
+4. **Repository gates:** applicable tests, lint, types, build, policy checks.
+5. **Deployed behavior:** smoke checks and observation if deployment is in scope.
+
+Run the full suite when project policy requires it, when shared behavior is affected,
+or when it is practical and adds useful regression coverage. Otherwise record why
+the selected subset covers the change. Never describe a subset as the full suite.
+
+For a reversible documentation or simple configuration change, an existing check
+may be enough. For a behavioral fix, add or strengthen a regression test if existing
+coverage does not detect it. Test expected outcomes, not the exact implementation.
+
+Assertions about existence are valid when existence is the contract. Exact values,
+authorization outcomes, state transitions, or side effects are needed when those
+are the contract. Neither a matcher-name ban nor a coverage badge replaces judgment.
+
+### Rollback proportional to effects
+
+| Change | Rollback or recovery preparation |
+|---|---|
+| Local source/configuration | Reviewable diff and known prior revision |
+| Published source | Revert path consistent with repository policy |
+| Deployed service | Previous artifact, compatible configuration, verification plan |
+| Persistent data | Tested restore/compensation plan, backup boundary, integrity checks |
+
+A code rollback does not necessarily reverse a data migration. Never assume a
+DOWN migration restores lost data or that a backup restore preserves writes made
+since the backup. Resolve that boundary before the material effect.
+
+**Output:** a verification plan and an appropriate recovery path.
+
+## 5. Implement the smallest complete correction
+
+Prefer the existing design and the component that owns the defective behavior.
+Do not add abstractions, dependencies, fallback paths, or broad refactors unless
+the cause requires them.
+
+Smallest complete correction does not always mean one file. A contract change may
+require both a producer and its consumers to change in the same unit of work.
+Finish those necessary parts; track unrelated improvements separately.
+
+Protect the observed failure evidence. Do not overwrite the baseline result with
+a passing result. Do not weaken the reproducer to accommodate the implementation.
+
+If investigation shows the test is wrong, establish the intended contract from an
+independent source before editing it. Explain why the original expectation was
+incorrect and how the replacement still detects meaningful faults.
+
+Search for the same causal pattern in related paths. Repair directly coupled
+instances required for correctness; record independent defects as separate work.
+Avoid expanding a login fix into an unsolicited authentication redesign.
+
+### Example: a focused data-filter correction
+
+For this illustrative example, amounts are integer units and rows belong to accounts.
+
+```python
+# Before: totals include every account.
+def total_for_account(rows, account_id):
+    return sum(row["amount"] for row in rows)
+```
+
+The reproducer defines the contract before the correction:
+
+```python
+def test_total_excludes_other_accounts():
+    rows = [
+        {"account_id": "a", "amount": 30},
+        {"account_id": "a", "amount": -5},
+        {"account_id": "b", "amount": 900},
+    ]
+    assert total_for_account(rows, "a") == 25
+    assert total_for_account(rows, "missing") == 0
+```
+
+The faulty implementation returns 925 for account `a`. The correction belongs in
+the selection logic, not in a test expectation or display-time adjustment:
+
+```python
+def total_for_account(rows, account_id):
+    return sum(row["amount"] for row in rows if row["account_id"] == account_id)
+```
+
+If incorrect totals were persisted, this code fix alone does not repair them.
+Investigate affected records and handle any authorized repair as an explicit part
+of delivery or a clearly stated unresolved boundary.
+
+**Output:** a focused patch and any necessary regression coverage.
+
+## 6. Verify the correction and its neighbors
+
+Run the same reproducer after the fix, under comparable conditions. Confirm the
+expected assertion executes and the original symptom is gone.
+
+Then run the selected neighboring, consumer, and repository checks. Preserve each
+command's exit status. An application printing “OK” is not sufficient if its process
+exits unsuccessfully, and exit zero alone does not prove correct behavior.
+
+Simple sequential gates should stop on failure:
+
 ```bash
-npm test
+# Use the project's actual commands.
+npm test && npm run lint && npm run typecheck && npm run build
 ```
 
-**Verify no regressions.**
+If independent checks are run concurrently, inspect every result. Bare `wait` does
+not aggregate child failures. This Bash example preserves them:
 
-**Check for similar bugs:**
-- Search codebase for similar patterns
-- If found, fix them too (or create tickets)
-
-**Example:**
-```
-Fixed login.ts - now search for other auth methods
-that might have the same issue:
-- signup.ts
-- passwordReset.ts
-- oauth.ts
-```
-
----
-
-### 7. Document and Commit
-
-**Commit message format:**
-```
-fix(scope): brief description
-
-Longer explanation of the bug and fix (optional).
-Fixes #issue-number
-```
-
-**Example:**
 ```bash
-git add src/auth/login.ts src/auth/login.test.ts
+#!/usr/bin/env bash
+set -u
 
-git commit -m "$(cat <<'EOF'
-fix(auth): require email verification before login
+pids=()
+names=(tests lint types)
+npm test & pids+=("$!")
+npm run lint & pids+=("$!")
+npm run typecheck & pids+=("$!")
 
-Previously, users with unverified emails could log in.
-Now returns 403 error if email is not verified.
-
-Fixes #456
-EOF
-)"
+failed=0
+for i in "${!pids[@]}"; do
+  if wait "${pids[$i]}"; then
+    printf '%s: PASS\n' "${names[$i]}"
+  else
+    result=$?
+    printf '%s: FAIL (exit %s)\n' "${names[$i]}" "$result" >&2
+    failed=1
+  fi
+done
+exit "$failed"
 ```
 
-**Update issue/ticket:**
-- Link to commit
-- Explain what was wrong and how it's fixed
-- Note if any follow-up work is needed
+Do not parallelize checks that modify shared fixtures, ports, databases, generated
+outputs, or process state without isolation. A build may depend on earlier results.
 
----
+Once required checks pass, stop repeating them unless a new edit, failure, changed
+environment, or unresolved concern justifies another run. Re-run affected checks
+after any subsequent code change or conflict resolution.
 
-## 🎚️ Adaptive Approach
+**Output:** actual results tied to the tested revision and environment.
 
-### Simple Bugs (typos, obvious errors)
+## 7. Classify every remaining failure
 
-**Streamlined process:**
-```
-1. Identify issue (obvious from error)
-2. Fix it
-3. Run tests
-4. Commit
+A failed check is a finding to investigate. It is not automatically caused by the
+patch, and it is not automatically unrelated because the patch is small.
 
-Skip: Reproduction test (obvious fix)
-```
+| Classification | Evidence needed | Required action |
+|---|---|---|
+| Regression caused by the change | Failure depends on this patch under comparable conditions | Fix it and re-run affected checks |
+| Existing independent defect | Same failure without this patch, plus a separate causal path | Record evidence and route ownership; keep gate status explicit |
+| Environment/dependency failure | Specific unavailable dependency, access, or setup condition | Repair within scope or state what verification remains blocked |
+| Nondeterministic failure | Recorded variation under stated conditions | Investigate or bound uncertainty; do not retry until green |
+| Stale or incorrect test | Independent contract contradicts the assertion | Correct the test with justification and verify meaningful behavior |
+| Unknown | Evidence cannot distinguish causes | Treat verification as unresolved; continue investigation or report a blocker |
 
-**Example:** Variable misspelled in one place.
+### Establishing an independent baseline failure
 
----
+Prefer a clean checkout of the relevant baseline, with the same dependencies and
+test inputs. Alternatively, disable only the proposed setting through a supported
+test override, or compare an isolated copy with and without the patch.
 
-### Complex Bugs (race conditions, data corruption)
+Do not revert other people's working changes to obtain a baseline. Record any
+environment differences that weaken the comparison. “It was already broken”
+requires evidence, not a comment or assumption.
 
-**Thorough process:**
-```
-1. Deep investigation (logging, debugging)
-2. Create comprehensive reproduction test
-3. Possibly add multiple test cases
-4. Implement fix
-5. Extensive testing (unit, integration, manual)
-6. Check for similar patterns
-7. Document thoroughly
-```
+Example from WORK-1018:
 
-**Example:** Intermittent failure under load.
+```text
+Without import-path fix:
+  Registration test: FAIL, ModuleNotFoundError: tools
+  Control-plane smoke check: FAIL, generated Codex configuration drift
 
----
-
-### Production Bugs (users affected NOW)
-
-**Prioritize speed:**
-```
-1. Quick diagnosis
-2. Implement minimal fix
-3. Deploy hotfix
-4. Create proper fix later if needed
-5. Post-mortem analysis
+With import-path fix:
+  Registration test: PASS
+  Full suite: 116 passed, 1 failed
+  Remaining failure: same generated configuration drift
 ```
 
-**See:** [Rollback & Recovery](../advanced/rollback-recovery.md)
+The correct statement is “the import defect is fixed; the suite still has one
+independent failure.” Neither “everything passes” nor “the import fix failed”
+accurately describes this evidence.
 
----
+### When closure with an independent failure is allowed
 
-## ⚠️ Common Pitfalls
+All of the following must hold:
 
-### Patching Symptoms
+1. The reported defect's acceptance checks pass.
+2. The remaining failure is independently reproduced and causally separated.
+3. It does not prevent required verification of this fix.
+4. It does not block the agreed delivery under project policy.
+5. It has an owner and disposition, with a linked issue when follow-up is needed.
+6. The completion record reports the failure and its effect on confidence.
 
-**❌ Bad:**
-```javascript
-// Crashes on undefined
-// "Fix": Add defensive check
-if (user && user.email) {
-  sendEmail(user.email);
-}
+If the task explicitly requires a green full suite, a failure anywhere in that
+required suite leaves the task incomplete. Creating a follow-up issue does not
+waive acceptance or make a required gate pass.
+
+## 8. Review and publish the actual change
+
+Review the final diff for correctness, scope, secrets, temporary probes, and
+unintended changes. Confirm that the evidence still matches the final code.
+
+```bash
+git diff --check
+git diff -- path/to/changed-file path/to/relevant-test
+git add -- path/to/changed-file path/to/relevant-test
+git diff --cached --stat
+git diff --cached
+git commit -m 'fix(component): describe the corrected behavior'
 ```
 
-**✅ Good:**
-```javascript
-// Find why user is undefined in the first place
-// Fix the root cause
+Use actual task-owned paths. Check for existing staged changes before staging; do
+not commit someone else's index contents. Use an isolated worktree when necessary.
+Let repository hooks run. Do not bypass them to hide a failed check.
+
+Publish using the established project path: PR, authorized direct push, or another
+documented delivery mechanism. A commit is not proof of a successful push; a push
+is not proof of merge; merge is not proof of deployment.
+
+If the remote moved, fetch and integrate the new base safely. Review conflicts and
+re-run checks affected by integration. Never force an unrelated branch backward.
+Confirm the destination contains the intended commit and record its identifier.
+
+### Independent review
+
+Use independent review when the user or project requires it, or when a specific
+substantial risk cannot be adequately resolved by the builder's checks. State the
+risk and the exact question the reviewer must answer.
+
+File count, use of a lifecycle workflow, and closure itself are not sufficient
+reasons to add an approval stage. Simulating several reviewer personas in the same
+session does not establish independent verification.
+
+## 9. Verify deployment when deployment is in scope
+
+Use the project's deployment procedure and authorized access. Validate the target
+environment, artifact revision, configuration, migration compatibility, and recovery
+path before applying material changes.
+
+After deployment, test the affected user path, relevant health signals, and error
+behavior. Observe for a duration justified by the failure mode. A successful restart
+or health endpoint alone does not verify a corrected business operation.
+
+If the change causes a regression, stop promotion and use the prepared recovery
+path. Verify the recovered state. Record what was rolled back and what persisted.
+
+Do not claim deployed resolution for a source-only change. Conversely, do not add
+a deployment to a task whose authorized endpoint is a local patch or submitted PR.
+
+## 10. Record evidence and close honestly
+
+Use the existing issue, PR, or task artifact as the canonical completion record.
+Record facts concise enough to review without replaying the conversation.
+
+```text
+Outcome: <verified fixed / implemented but verification blocked / mitigated /
+          unresolved / rolled back>
+Issue and cause: <symptom and supported cause>
+Change: <what changed and why>
+Before: <reproducer, failure, baseline revision>
+After: <same check, result, final revision>
+Regression checks: <scope and actual passed/failed/not-run results>
+Remaining failures: <classification, evidence, owner, follow-up>
+Delivery: <local / PR submitted / merged / deployed, with reference>
+Recovery: <available or performed, when relevant>
+Limitations: <what the evidence does not establish>
 ```
 
----
+For a small fix, this can be a short paragraph. Keep detailed logs only when they
+support a material finding; store them through the project's approved, redacted
+evidence path. Do not publish credentials or unrelated personal data.
 
-### Incomplete Testing
+| Outcome | Meaning | Close the defect? |
+|---|---|---|
+| Verified fixed | Acceptance and agreed delivery completed; remaining failures satisfy Section 7 | Yes, under project policy |
+| Implemented but verification blocked | Patch exists; required evidence is unavailable | No |
+| Mitigated | Impact reduced; cause or durable correction remains | Keep defect/root-cause work open; incident recovery may close separately |
+| Unresolved | Cause or correction not established | No |
+| Rolled back | Attempted change reversed and recovery checked | No, unless the authorized resolution was the rollback itself |
 
-**❌ Bad:**
-```
-Fixed the code, manually tested once, looks good.
-```
+An authorized builder can record evidence and close their own completed issue.
+Do not invent a mandatory separate verifier or queue-manager approval. Honor an
+explicit project requirement where one actually exists.
 
-**✅ Good:**
-```
-1. Added automated test
-2. Verified test failed before fix
-3. Verified test passes after fix
-4. Ran full suite - no regressions
-```
+## Practical checkpoints and interruption recovery
 
----
+Use checkpoints at decisions, not a guessed message counter:
 
-### Scope Creep
+- **Before editing:** expected behavior, baseline, cause, and scope are clear.
+- **Before publication:** required results are available and all failures classified.
+- **Before closure:** delivery and remaining limitations match the claim.
+- **After interruption:** reload the task record, inspect repository state, and
+  reconcile prior evidence before resuming.
 
-**❌ Bad:**
-```
-While fixing login bug, also refactored entire auth module,
-renamed variables, reorganized files, updated styling...
-```
+Do not replay every completed check automatically after interruption. Repeat checks
+whose inputs changed or whose recorded results cannot be trusted. Do not treat a
+stale summary as proof that a command ran or a deployment succeeded.
 
-**✅ Good:**
-```
-Fixed login bug only.
-Created separate tickets for improvements noticed.
-```
+Provide progress updates when diagnosis, scope, or confidence changes. Report the
+fact and the next discriminating check. Routine framework-status announcements
+do not substitute for investigation.
 
----
+## Special cases
 
-## 📊 Checklist
+### Production incident
 
-Before considering a bug fixed:
+Separate immediate containment from durable correction. Within existing authority,
+consider rollback, disabling the affected path, or another reversible mitigation.
+Preserve enough evidence to diagnose the cause without prolonging user impact.
 
-- [ ] Fully understand what's wrong and why
-- [ ] Located root cause (not just symptom)
-- [ ] Created reproduction test (if feasible)
-- [ ] Implemented minimal fix
-- [ ] Reproduction test passes
-- [ ] Full test suite passes
-- [ ] No linting errors
-- [ ] Checked for similar bugs
-- [ ] Committed with proper message
-- [ ] Updated issue/ticket
-- [ ] Considered if documentation needs update
+Do not require a new automated test before an urgent authorized rollback. Verify
+recovery immediately, then reproduce and test the durable correction safely.
+An emergency does not authorize arbitrary data loss, secret exposure, or bypassing
+the user's deployment permissions.
 
----
+### Intermittent race or performance regression
 
-## 💡 Examples
+Prefer deterministic synchronization or a captured workload over arbitrary sleeps.
+For performance, compare the same data, resources, warm-up, and measurement method.
+Record sample counts and distributions when meaningful. Passing a few runs narrows
+uncertainty; it does not prove the defect can never recur.
 
-### Example 1: Frontend Bug
+### No useful automated test
 
-**Report:** "Submit button doesn't work on profile page"
+A hardware interaction, visual defect, documentation error, or unavailable external
+environment may need bounded manual verification. Specify the steps, expected
+observable result, observed result, and remaining limitation. Do not manufacture a
+trivial automated assertion solely to claim test coverage.
 
-**Process:**
-```
-1. Understand: Button click does nothing
-2. Locate: Read ProfilePage.tsx, check onClick handler
-3. Reproduce: Create test clicking submit button
-4. Root cause: Form validation always returns false
-5. Fix: Correct validation logic in validateProfile()
-6. Verify: Test passes, full suite passes
-7. Commit: fix(profile): correct form validation logic
-```
+### Existing test already catches the bug
 
----
+Use it as the regression check. Add coverage only for a distinct risk or missing
+boundary. Configuration fixes such as WORK-1018 often need no new test file.
 
-### Example 2: API Bug
+### Report appears incorrect
 
-**Report:** "GET /api/users returns 500 error"
+Compare the report with the authoritative contract and observed behavior. Explain
+the discrepancy with evidence. Do not change working behavior simply to satisfy an
+unsupported interpretation. Record the resolution according to project policy.
 
-**Process:**
-```
-1. Understand: Read error logs, see SQL syntax error
-2. Locate: Find query in users.controller.ts
-3. Reproduce: Create test calling GET /api/users
-4. Root cause: Missing WHERE clause in query
-5. Fix: Add WHERE clause with proper escaping
-6. Verify: Test passes, check for SQL injection vulnerability
-7. Commit: fix(api): add WHERE clause to users query
-```
+## Common failure patterns to avoid
 
----
+| Pattern | Why it is inadequate | Better action |
+|---|---|---|
+| Patch the first suspicious line | No causal evidence | Reproduce and test a discriminating hypothesis |
+| Re-run until green | Hides nondeterminism | Record variation and investigate the conditions |
+| Weaken an assertion | Can conceal the original defect | Establish the contract independently |
+| Add a test that only checks config text | Does not verify the reported behavior | Exercise the actual invocation or outcome |
+| Demand whole-repository cleanup | Expands scope without proving necessity | Separate coupled fixes from independent findings |
+| Call an unrelated failure “pre-existing” | Assumes independence | Reproduce it without the patch |
+| Declare success after bare `wait` | Loses individual failure status | Inspect every concurrent command's result |
+| Treat a heartbeat as enforcement | Depends on the same agent remembering it | Record real checks at meaningful decisions |
+| Equate passing tests with proof of all behavior | Overstates test coverage | Name the exercised behavior and evidence limits |
+| Close after commit when merge is required | Stops before agreed delivery | Verify the actual destination and gate results |
 
-### Example 3: Data Bug
+## Decision scenarios for reviewing this workflow
 
-**Report:** "User balances showing incorrect values"
+These are expected decisions, not claims that all scenarios were executed.
 
-**Process:**
-```
-1. Understand: Balance should be sum of transactions
-2. Locate: calculateBalance() in account.service.ts
-3. Reproduce: Create test with known transactions
-4. Root cause: Not filtering by account ID
-5. Fix: Add account ID filter to transaction query
-6. Verify: Test with multiple accounts
-7. Commit: fix(accounts): filter transactions by account ID
-8. Check: Search for other queries missing account filter
-```
+| Scenario | Expected decision |
+|---|---|
+| Console pytest fails; module invocation passes | Compare import context; fix the documented invocation; verify both |
+| Focused test passes; independent optional check still fails | Establish baseline, track the failure, evaluate closure conditions |
+| Same situation but full green CI is required | Keep merge/closure blocked; follow-up does not waive the gate |
+| A new related test fails only with the patch | Treat it as a regression and fix before publication |
+| Test passes against previously untested correct behavior | It may be valid characterization coverage; assess fault detection |
+| A bug reproducer fails only because its fixture is broken | Repair the fixture before claiming the product defect is reproduced |
+| Another agent has dirty overlapping changes | Isolate or coordinate; do not stash or overwrite their work |
+| Production users lose access after release | Use authorized containment, verify recovery, preserve root-cause work |
+| Reproducer requires unavailable hardware | State verification blocked; do not mark verified fixed |
+| Pass count rises but targeted defect still reproduces | Continue; aggregate counts do not satisfy acceptance |
+| Remote base changes after successful tests | Integrate safely and re-run checks affected by the new base |
+| Same agent role-plays three reviewers | Treat as self-review, not independent evidence |
 
----
+## Final checklist
 
-## ✅ Test Scenarios
+- [ ] Expected and observed behavior are explicit.
+- [ ] Baseline, reproduction, and evidence limits are recorded.
+- [ ] The causal explanation supports the correction.
+- [ ] Unrelated work and sensitive data are preserved.
+- [ ] The patch is complete for its scope and introduces no known regression.
+- [ ] The reported path and relevant neighboring behavior pass verification.
+- [ ] Every required gate has an honest result.
+- [ ] Remaining failures have evidence, classification, and disposition.
+- [ ] No required acceptance or delivery condition is waived by a follow-up.
+- [ ] Publication/deployment reaches the agreed endpoint.
+- [ ] The completion record matches the evidence.
 
-Use these scenarios to verify you're following the bug-fix workflow correctly:
+## Worked example and revision history
 
-### Scenario 1: Simple Frontend Bug
+See [WORK-1018: pytest console import failure](../examples/bug-fix-example.md)
+for the observed small-fix execution that informed this revision.
 
-**Given:** User reports "Submit button doesn't respond when form is empty"
+**2.0.0 — 2026-09-16:** Added explicit baselines, proportional verification,
+independent-failure classification, publication boundaries, interruption recovery,
+and closure rules. Replaced message-count heartbeat requirements with operational
+checkpoints. Corrected assumptions about matcher names and universal coverage.
 
-**Expected workflow:**
-1. ✓ Reproduce issue (click submit with empty form)
-2. ✓ Locate code (find form submit handler)
-3. ✓ Write failing test (test: "should show validation error when form empty")
-4. ✓ Test fails (proves bug exists)
-5. ✓ Implement fix (add validation check)
-6. ✓ Test passes (proves fix works)
-7. ✓ All tests pass (no regressions)
-8. ✓ Commit message: `fix(form): add validation for empty form submission`
-
-**Self-check:**
-- [ ] Did I reproduce the bug before fixing?
-- [ ] Did I create a test that failed before the fix?
-- [ ] Does the test pass after the fix?
-- [ ] Did I run the full test suite?
-- [ ] Is the commit message in conventional format?
-
----
-
-### Scenario 2: Backend API Bug
-
-**Given:** API endpoint returns 500 error for specific user ID
-
-**Expected workflow:**
-1. ✓ Check error logs (find stack trace)
-2. ✓ Reproduce (curl/Postman with problematic ID)
-3. ✓ Locate code (find controller handling that endpoint)
-4. ✓ Create test (`test: "should return user data for ID 12345"`)
-5. ✓ Test fails with 500 error (reproduces bug)
-6. ✓ Debug (null check missing for edge case)
-7. ✓ Fix (add null check, return 404 for missing user)
-8. ✓ Test passes
-9. ✓ Add related test (`test: "should return 404 for non-existent user"`)
-10. ✓ Commit: `fix(api): handle null user in getUserById endpoint`
-
-**Self-check:**
-- [ ] Did I check error logs first?
-- [ ] Did I identify the root cause (not just symptom)?
-- [ ] Did I add tests for both the bug and edge cases?
-- [ ] Does error handling follow API conventions?
-
----
-
-### Scenario 3: Data Corruption Bug
-
-**Given:** "User balances sometimes show incorrect values"
-
-**Expected workflow:**
-1. ✓ Gather data (which users affected? when did it start?)
-2. ✓ Reproduce with specific data (create test account, trigger bug)
-3. ✓ Locate calculation logic (find balance calculation function)
-4. ✓ Create test with known inputs/outputs
-5. ✓ Test fails (balance calculation wrong)
-6. ✓ Debug (missing transaction type filter)
-7. ✓ Fix (filter by transaction type)
-8. ✓ Test passes
-9. ✓ Add data migration to fix existing bad data
-10. ✓ Commit: `fix(accounts): filter transactions by type in balance calculation`
-
-**Self-check:**
-- [ ] Did I verify with actual data?
-- [ ] Did I consider data migration for existing bad data?
-- [ ] Did I add tests for all transaction types?
-- [ ] Did I check for similar bugs in related code?
-
----
-
-### Scenario 4: Performance Bug
-
-**Given:** "Page loads slowly (>5 seconds) with large datasets"
-
-**Expected workflow:**
-1. ✓ Reproduce (load page with large dataset)
-2. ✓ Profile (use browser DevTools or profiler)
-3. ✓ Identify bottleneck (N+1 query problem)
-4. ✓ Create performance test (measure query time)
-5. ✓ Test shows slow performance (baseline)
-6. ✓ Fix (use JOIN instead of multiple queries)
-7. ✓ Test shows improved performance (5s → 0.3s)
-8. ✓ Verify no behavior change (data still correct)
-9. ✓ Commit: `perf(data): optimize user query with JOIN`
-
-**Self-check:**
-- [ ] Did I measure performance before and after?
-- [ ] Did I verify behavior is unchanged?
-- [ ] Did I check if fix applies to similar queries?
-
----
-
-### Validation Checklist
-
-After completing any bug fix, verify:
-
-```
-□ Bug reproduced successfully
-□ Root cause identified (not just symptom)
-□ Test created that fails before fix
-□ Test passes after fix
-□ Full test suite passes
-□ No new linting errors
-□ Coverage maintained or improved
-□ Commit message follows format: fix(scope): description
-□ Not committed to main/master
-□ Related bugs checked/fixed
-```
-
----
-
-## 📖 Complete Example
-
-**See:** [Bug Fix Example](../examples/bug-fix-example.md) - Complete walkthrough of fixing a login crash bug, from reproduction to commit.
-
----
-
-**Remember:** A bug isn't fixed until it's tested, verified, and won't happen again. Take the time to understand and fix it properly.
+The core sequence has evidence from one small configuration defect. The expanded
+incident, data-repair, and concurrency guidance remains guidance; its inclusion
+is not evidence of end-to-end validation in those settings.

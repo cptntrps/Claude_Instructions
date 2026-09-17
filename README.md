@@ -1,9 +1,18 @@
 # Claude Development Instructions
 
-**Version:** 1.3.0
-**Last Updated:** 2025-11-09
+**Version:** 1.3.3
+**Last Updated:** 2026-09-16
 
 A comprehensive, reusable instruction system for Claude Code that defines agentic workflows, best practices, and quality standards for software development projects.
+
+**Bug-fix workflow v2:** The [revised procedure](claude_instructions/workflows/bug-fix.md)
+provides detailed reproduction, diagnosis, proportional verification, failure
+classification, publication, and closure guidance. It includes the observed
+[WORK-1018 example](claude_instructions/examples/bug-fix-example.md).
+For bug-fix tasks, its scoped rules supersede older generic testing, coverage,
+heartbeat, and closure summaries in this package. User instructions, project
+requirements, and enforced gates remain authoritative. Other workflows retain
+their existing procedures and have not been revalidated by this revision.
 
 ---
 
@@ -233,7 +242,7 @@ Auto-detects and adapts to your stack:
 
 ### **4. Comprehensive Workflows**
 
-6 battle-tested workflows:
+6 documented workflows (not an independently benchmarked suite):
 - 🐛 Bug Fix
 - ✨ Feature Development
 - 🔧 Refactoring
@@ -338,7 +347,8 @@ Expected: Auto-fixes without asking
 **Test 2: Bug Fix (Full Workflow)**
 ```
 Report a bug
-Expected: Creates test first, fixes, verifies all tests pass
+Expected: Reproduces the failure, reuses or adds a meaningful test, fixes the cause,
+verifies required behavior, and classifies remaining failures under Bug Fix v2.
 ```
 
 **Test 3: Security (Non-Negotiable)**
@@ -428,6 +438,24 @@ Think of it like giving a senior engineer autonomy, but with clear policies they
 ---
 
 ## 📝 Changelog
+
+### v1.3.3 (2026-09-16)
+- Revised Bug Fix Workflow to workflow version 2.0.0, with detailed steps,
+  examples, decision tables, failure handling, and completion evidence.
+- Added independently reproduced baseline-failure handling without waiving
+  required acceptance criteria or repository gates.
+- Replaced bug-fix message-count heartbeats with operational checkpoints.
+- Distinguished source publication, deployment, mitigation, and verified resolution.
+- Updated bug-fix routing and replaced the illustrative worked example with
+  the observed WORK-1018 case and its explicitly limited verification result.
+- Validation covers document structure and executable examples; this is not
+  an end-to-end benchmark of the expanded workflow.
+
+### v1.3.2 (2025-11-10)
+- Added test-efficacy guidance and assertion/mutation-testing standards.
+
+### v1.3.1 (2025-11-10)
+- Added the framework heartbeat protocol and persistence guidance.
 
 ### v1.3.0 (2025-11-09)
 - **BREAKING:** Restructured to use `claude_instructions/` folder
@@ -527,6 +555,6 @@ RECONFIGURE SESSION
 
 ---
 
-**Version:** 1.3.0
+**Version:** 1.3.3
 **License:** Internal Use
 **Maintained By:** Development Team

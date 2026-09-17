@@ -2,6 +2,13 @@
 
 Requirements and best practices for test coverage and quality.
 
+**Bug-fix scope:** When supporting [Bug Fix Workflow v2](../workflows/bug-fix.md),
+follow its verification and failure-classification contract instead of conflicting
+defaults below. An adequate existing regression test is sufficient. Assertion
+choice follows the behavior being tested; existence checks are not inherently
+invalid. Coverage thresholds and mutation testing apply when the project requires
+them or the risk justifies them. No independent failure waives a required gate.
+
 ---
 
 ## 🚨 Non-Negotiables

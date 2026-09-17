@@ -1,8 +1,25 @@
 # Claude Development Instructions
 
-**Version:** 1.3.2 (Phase 2 Test Efficacy)
-**Last Updated:** 2025-11-10
+**Version:** 1.3.3 (Bug Fix Workflow v2)
+**Last Updated:** 2026-09-16
 **Approach:** Principle-Oriented with Non-Negotiable Guardrails + Multi-Agent Reasoning (AGPF) + Framework Persistence + Anti-Theater Testing
+
+## Bug-fix contract and precedence
+
+For bug-fix tasks, load [Bug Fix Workflow v2](./workflows/bug-fix.md).
+It governs reproduction, verification depth, existing failures, publication,
+and closure. Its scoped rules supersede conflicting procedural defaults in
+this package, including the testing and heartbeat sections below, modes,
+quick-reference summaries, initialization reminders, and supporting guides.
+Explicit user instructions, project requirements, permissions, and enforced
+gates always remain in force; a follow-up issue never waives required acceptance.
+
+The revised workflow permits existing regression tests, requires evidence before
+classifying a failure as independent, and uses operational checkpoints instead of
+message-count heartbeats. Generic coverage targets and matcher-name bans below
+are not bug-fix acceptance criteria unless the project separately requires them.
+Its [worked example](./examples/bug-fix-example.md) records one small configuration
+fix. Other workflows and historical effectiveness claims are not revalidated here.
 
 ---
 
@@ -172,8 +189,9 @@ The **[Persistence Card](./quickref.md#persistence-card)** is a compact summary 
 
 ### Workflow Integration
 
-All 6 workflows now include **Context Anchors** that trigger validation at critical points:
-- Bug Fix: Before implementing fix, after fix, workflow complete
+The legacy workflows use **Context Anchors** as reminders at critical points.
+Bug Fix v2 uses evidence checkpoints without message-count heartbeats:
+- Bug Fix: Baseline before editing, results before publication, delivery before closure
 - Feature Development: Before implementation, after implementation, feature complete
 - Refactoring: Before refactoring, after each step, complete
 - Code Review: Security review, test coverage review, complete
